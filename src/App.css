@@ -36,3 +36,62 @@
     transform: rotate(360deg);
   }
 }
+
+.Header {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Roboto', sans-serif;
+  padding-top: 20px;
+}
+
+.Container {
+  width: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.Flex {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.Flex-Row {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px;
+}
+
+.Flex-Row-Output {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px;
+}
+
+.Title-Padding {
+  padding-left: 50px;
+}
+
+.Spacing {
+  width: 10px;
+}
+
+.Flex-Row-Narrow {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px;
+  margin-left: 24px;
+}
