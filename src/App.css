@@ -43,12 +43,12 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   padding-top: 20px;
 }
 
 .Container {
-  width: 50%;
+  min-width: 800px;
   border: 1px solid rgba(0, 0, 0, 0.12);
 }
 
@@ -78,8 +78,17 @@
   padding: 12px;
 }
 
+.Flex-Row-Total {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 12px;
+}
+
 .Title-Padding {
-  padding-left: 50px;
+  padding-left: 41px;
 }
 
 .Spacing {
@@ -94,4 +103,17 @@
   justify-content: space-between;
   padding: 12px;
   margin-left: 24px;
+}
+
+.body-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.body-flex-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
