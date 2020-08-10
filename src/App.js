@@ -77,7 +77,7 @@ export default function App() {
 
   const calcGST = () => {
     const gst = 0.05;
-    let lawyerFee = 800 + calcComplexityFee() + calcMortageFee() + calcPPT();
+    let lawyerFee = 800 + calcComplexityFee() + calcPPT();
     return calcServiceCharge(1.65) * gst + lawyerFee * gst;
   };
 
