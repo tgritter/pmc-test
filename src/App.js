@@ -1,10 +1,10 @@
-import React from "react";
 import "./App.css";
+import React from "react";
+import AccountBalanceIcon from "@material-ui/icons/AccountBalance";
 import { makeStyles } from "@material-ui/core/styles";
 import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import AccountBalanceIcon from "@material-ui/icons/AccountBalance";
 import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
@@ -99,12 +99,12 @@ export default function App() {
     }
   };
 
-  const calcMortageFee = () => {
-    if (!mortgages) {
-      return 0;
-    }
-    return mortgages * 75;
-  };
+  // const calcMortageFee = () => {
+  //   if (!mortgages) {
+  //     return 0;
+  //   }
+  //   return mortgages * 75;
+  // };
 
   const calcComplexityFee = () => {
     if (!mortgages) {
