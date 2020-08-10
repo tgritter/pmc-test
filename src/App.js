@@ -1,17 +1,15 @@
 import React from "react";
+import "./App.css";
 import { makeStyles } from "@material-ui/core/styles";
 import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import AccountBalanceIcon from "@material-ui/icons/AccountBalance";
 import InputLabel from "@material-ui/core/InputLabel";
-import FormHelperText from "@material-ui/core/FormHelperText";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
-import Button from "@material-ui/core/Button";
 import CurrencyTextField from "@unicef/material-ui-currency-textfield";
-import "./App.css";
-import { findByLabelText } from "@testing-library/react";
+import { municipalities } from "./municipalities.js";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -41,18 +39,17 @@ const useStyles = makeStyles((theme) => ({
 
 export default function App() {
   const classes = useStyles();
-  const [toggle, setToggle] = React.useState(true);
   const [price, setPrice] = React.useState(null);
-  const [province, setProvince] = React.useState(null);
-  const [mortgages, setMortgages] = React.useState(null);
-  const [strata, setStrata] = React.useState(null);
+  const [municipality, setMunicipality] = React.useState("");
+  const [mortgages, setMortgages] = React.useState("");
+  const [strata, setStrata] = React.useState("");
 
-  const handleToggle = () => {
-    setToggle(!toggle);
+  const currencyFormat = (num) => {
+    return "$" + num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
   };
 
-  const handleProvinceChange = (event) => {
-    setProvince(event.target.value);
+  const handleMunicipalityChange = (event) => {
+    setMunicipality(event.target.value);
   };
 
   const handleMortageChange = (event) => {
@@ -63,8 +60,29 @@ export default function App() {
     setStrata(event.target.value);
   };
 
-  const currencyFormat = (num) => {
-    return "$" + num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+  const calcServiceCharge = () => {
+    const charge = 1.65;
+    return 6 * charge;
+  };
+
+  const calcSearchFee = () => {
+    const fee = 9.88;
+    return 3 * fee;
+  };
+
+  const getTaxCertificates = () => {
+    const found = municipalities.find((city) => city.name === municipality);
+    return typeof found === "undefined" ? 0 : found.fees;
+  };
+
+  const calcGST = () => {
+    const gst = 0.05;
+    let lawyerFee = 800 + calcComplexityFee() + calcMortageFee() + calcPPT();
+    return calcServiceCharge(1.65) * gst + lawyerFee * gst;
+  };
+
+  const calcPST = () => {
+    return 0;
   };
 
   const calcPPT = () => {
@@ -93,12 +111,6 @@ export default function App() {
       return 0;
     }
     return mortgages * 50;
-  };
-
-  const calcGST = () => {
-    const gst = 0.05;
-    var lawyerFee = 800 + calcComplexityFee() + calcMortageFee() + calcPPT();
-    return 1.65 * gst + lawyerFee * gst;
   };
 
   return (
@@ -139,17 +151,20 @@ export default function App() {
                     className={classes.formControl}
                   >
                     <InputLabel htmlFor="outlined-age-native-simple">
-                      Province
+                      Municipality
                     </InputLabel>
                     <Select
                       native
-                      value={province}
-                      onChange={handleProvinceChange}
-                      label="Province"
+                      value={municipality}
+                      onChange={handleMunicipalityChange}
+                      label="Municipality"
                     >
-                      <option aria-label="none" value="" />
-                      <option value={"ab"}>Alberta</option>
-                      <option value={"bc"}>British Columbia</option>
+                      <option aria-label="none" value={""} />
+                      {municipalities.map((city) => (
+                        <option key={city.name} value={city.name}>
+                          {city.name}
+                        </option>
+                      ))}
                     </Select>
                   </FormControl>
                 </div>
@@ -205,24 +220,32 @@ export default function App() {
                     component="p"
                     variant="inherit"
                   >
-                    MyLTSA
+                    Land Title Office Fees
                   </Typography>
                   <Typography component="p" variant="inherit"></Typography>
                 </div>
                 <div className="Flex-Row-Narrow">
                   <Typography component="p" variant="inherit">
-                    Search Fee
+                    Service Charge (6 X $1.65)
                   </Typography>
                   <Typography component="p" variant="inherit">
-                    {currencyFormat(9.88)}
+                    {currencyFormat(calcServiceCharge())}
                   </Typography>
                 </div>
                 <div className="Flex-Row-Narrow">
                   <Typography component="p" variant="inherit">
-                    Service Charge
+                    Search Fee (3 X $9.88)
                   </Typography>
                   <Typography component="p" variant="inherit">
-                    {currencyFormat(1.65)}
+                    {currencyFormat(calcSearchFee())}
+                  </Typography>
+                </div>
+                <div className="Flex-Row-Narrow">
+                  <Typography component="p" variant="inherit">
+                    Tax Certificates
+                  </Typography>
+                  <Typography component="p" variant="inherit">
+                    {currencyFormat(getTaxCertificates())}
                   </Typography>
                 </div>
                 <div className="Flex-Row-Output">
@@ -237,28 +260,36 @@ export default function App() {
                 </div>
                 <div className="Flex-Row-Narrow">
                   <Typography component="p" variant="inherit">
-                    Provincial Property Tax
-                  </Typography>
-                  <Typography component="p" variant="inherit">
-                    {currencyFormat(calcPPT())}
-                  </Typography>
-                </div>
-                <div className="Flex-Row-Narrow">
-                  <Typography component="p" variant="inherit">
-                    {`Mortgage Fee (${mortgages ? mortgages : 0} x $75)`}
-                  </Typography>
-                  <Typography component="p" variant="inherit">
-                    {currencyFormat(calcMortageFee())}
-                  </Typography>
-                </div>
-                <div className="Flex-Row-Narrow">
-                  <Typography component="p" variant="inherit">
                     GST
                   </Typography>
                   <Typography component="p" variant="inherit">
                     {currencyFormat(calcGST())}
                   </Typography>
                 </div>
+                <div className="Flex-Row-Narrow">
+                  <Typography component="p" variant="inherit">
+                    PST
+                  </Typography>
+                  <Typography component="p" variant="inherit">
+                    {currencyFormat(calcPST())}
+                  </Typography>
+                </div>
+                <div className="Flex-Row-Narrow">
+                  <Typography component="p" variant="inherit">
+                    Provincial Property Tax
+                  </Typography>
+                  <Typography component="p" variant="inherit">
+                    {currencyFormat(calcPPT())}
+                  </Typography>
+                </div>
+                {/* <div className="Flex-Row-Narrow">
+                  <Typography component="p" variant="inherit">
+                    {`Mortgage Fee (${mortgages ? mortgages : 0} x $75)`}
+                  </Typography>
+                  <Typography component="p" variant="inherit">
+                    {currencyFormat(calcMortageFee())}
+                  </Typography>
+                </div> */}
                 <div className="Flex-Row-Output">
                   <Typography
                     className={classes.boldText}
@@ -307,11 +338,14 @@ export default function App() {
                     variant="inherit"
                   >
                     {currencyFormat(
-                      800 +
-                        calcComplexityFee() +
-                        calcMortageFee() +
+                      calcServiceCharge() +
+                        calcSearchFee() +
+                        getTaxCertificates() +
+                        calcGST() +
+                        calcPST() +
                         calcPPT() +
-                        calcGST()
+                        800 +
+                        calcComplexityFee()
                     )}
                   </Typography>
                 </div>
