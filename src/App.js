@@ -42,7 +42,7 @@ export default function App() {
   const [price, setPrice] = React.useState(null);
   const [municipality, setMunicipality] = React.useState("");
   const [mortgages, setMortgages] = React.useState("");
-  const [strata, setStrata] = React.useState("");
+  const [titleInsurance, setTitleInsurance] = React.useState("");
 
   const currencyFormat = (num) => {
     return "$" + num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
@@ -56,8 +56,8 @@ export default function App() {
     setMortgages(event.target.value);
   };
 
-  const handleStrataChange = (event) => {
-    setStrata(event.target.value);
+  const handleTitleInsuranceChange = (event) => {
+    setTitleInsurance(event.target.value);
   };
 
   const calcServiceCharge = () => {
@@ -78,7 +78,7 @@ export default function App() {
   const calcGST = () => {
     const gst = 0.05;
     let lawyerFee = 800 + calcComplexityFee() + calcPPT();
-    return calcServiceCharge(1.65) * gst + lawyerFee * gst;
+    return (calcServiceCharge() + lawyerFee) * gst;
   };
 
   const calcPST = () => {
@@ -106,11 +106,35 @@ export default function App() {
   //   return mortgages * 75;
   // };
 
+  const calcTitleInsurance = (type) => {
+    if (titleInsurance === "no" || titleInsurance === "") {
+      return 0;
+    }
+    if (type === "low") {
+      return 100;
+    }
+    return 200;
+  };
+
   const calcComplexityFee = () => {
     if (!mortgages) {
       return 0;
     }
     return mortgages * 50;
+  };
+
+  const calcTotal = (type) => {
+    return (
+      calcServiceCharge() +
+      calcSearchFee() +
+      getTaxCertificates() +
+      calcGST() +
+      calcPST() +
+      calcPPT() +
+      calcTitleInsurance(type) +
+      800 +
+      calcComplexityFee()
+    );
   };
 
   return (
@@ -197,13 +221,13 @@ export default function App() {
                     className={classes.formControl}
                   >
                     <InputLabel htmlFor="outlined-age-native-simple">
-                      Strata?
+                      Title Insurance?
                     </InputLabel>
                     <Select
                       native
-                      value={strata}
-                      onChange={handleStrataChange}
-                      label="Strata?"
+                      value={titleInsurance}
+                      onChange={handleTitleInsuranceChange}
+                      label="Title Insurance?"
                     >
                       <option aria-label="none" value="" />
                       <option value={"yes"}>Yes</option>
@@ -296,6 +320,29 @@ export default function App() {
                     component="p"
                     variant="inherit"
                   >
+                    Insurance
+                  </Typography>
+                  <Typography component="p" variant="inherit"></Typography>
+                </div>
+                <div className="Flex-Row-Narrow">
+                  <Typography component="p" variant="inherit">
+                    Title Insurance
+                  </Typography>
+                  <Typography component="p" variant="inherit">
+                    {titleInsurance === "no" || titleInsurance === ""
+                      ? currencyFormat(0)
+                      : `${currencyFormat(
+                          calcTitleInsurance("low")
+                        )} - ${currencyFormat(calcTitleInsurance("high"))} `}
+                  </Typography>
+                </div>
+
+                <div className="Flex-Row-Output">
+                  <Typography
+                    className={classes.boldText}
+                    component="p"
+                    variant="inherit"
+                  >
                     Lawyer Fees
                   </Typography>
                   <Typography component="p" variant="inherit"></Typography>
@@ -337,16 +384,11 @@ export default function App() {
                     component="p"
                     variant="inherit"
                   >
-                    {currencyFormat(
-                      calcServiceCharge() +
-                        calcSearchFee() +
-                        getTaxCertificates() +
-                        calcGST() +
-                        calcPST() +
-                        calcPPT() +
-                        800 +
-                        calcComplexityFee()
-                    )}
+                    {calcTotal("low") == calcTotal("high")
+                      ? currencyFormat(calcTotal("low"))
+                      : `${currencyFormat(calcTotal("low"))} - ${currencyFormat(
+                          calcTotal("high")
+                        )}`}
                   </Typography>
                 </div>
               </div>
