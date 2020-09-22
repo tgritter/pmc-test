@@ -41,8 +41,11 @@ export default function App() {
   const classes = useStyles();
   const [price, setPrice] = React.useState(null);
   const [municipality, setMunicipality] = React.useState("");
-  const [mortgages, setMortgages] = React.useState("");
+  const [mortgage, setMortgage] = React.useState("");
   const [titleInsurance, setTitleInsurance] = React.useState("");
+  const [strata, setStrata] = React.useState("");
+  const [construction, setConstruction] = React.useState("");
+  const [numChargers, setNumChargers] = React.useState("");
 
   const currencyFormat = (num) => {
     return "$" + num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
@@ -53,11 +56,23 @@ export default function App() {
   };
 
   const handleMortageChange = (event) => {
-    setMortgages(event.target.value);
+    setMortgage(event.target.value);
   };
 
   const handleTitleInsuranceChange = (event) => {
     setTitleInsurance(event.target.value);
+  };
+
+  const handleStrataChange = (event) => {
+    setStrata(event.target.value);
+  };
+
+  const handleConstruction = (event) => {
+    setConstruction(event.target.value);
+  };
+
+  const handleNumCharges = (event) => {
+    setNumChargers(event.target.value);
   };
 
   const calcServiceCharge = () => {
@@ -77,8 +92,12 @@ export default function App() {
 
   const calcGST = () => {
     const gst = 0.05;
-    let lawyerFee = 800 + calcComplexityFee() + calcPPT();
-    return (calcServiceCharge() + lawyerFee) * gst;
+    let lawyerFee = 800 + calcComplexityUnit() + calcPPT();
+    let specialtyFees = 75;
+    let renovatationFee = construction === "yes" ? price : 0;
+    return (
+      (calcServiceCharge() + lawyerFee + specialtyFees + renovatationFee) * gst
+    );
   };
 
   const calcPST = () => {
@@ -99,28 +118,53 @@ export default function App() {
     }
   };
 
-  // const calcMortageFee = () => {
-  //   if (!mortgages) {
-  //     return 0;
-  //   }
-  //   return mortgages * 75;
-  // };
+  const calcComplexityUnit = () => {
+    let value = 0;
+    if (strata === "yes") {
+      value += 100;
+    }
+    if (mortgage === "yes") {
+      value += 100;
+    }
+    if (mortgage === "yes1") {
+      value += 200;
+    }
+    value += parseInt(numChargers) * 100;
+
+    return value;
+  };
 
   const calcTitleInsurance = (type) => {
     if (titleInsurance === "no" || titleInsurance === "") {
       return 0;
     }
-    if (type === "low") {
-      return 100;
-    }
-    return 200;
+    return type === "low" ? 100 : 200;
   };
 
-  const calcComplexityFee = () => {
-    if (!mortgages) {
+  const calcAdministrativeFees = (type) => {
+    if (type === "low") {
+      return 30 + 50 + 20 + 75;
+    } else {
+      return 50 + 75 + 20 + 75;
+    }
+  };
+
+  const calcInsuranceBinder = (type) => {
+    if (type === "low") {
+      return 30;
+    } else {
+      return 50;
+    }
+  };
+
+  const calcStrataFee = (type) => {
+    if (strata !== "yes") {
       return 0;
     }
-    return mortgages * 50;
+    if (type === "low") {
+      return 50;
+    }
+    return 100;
   };
 
   const calcTotal = (type) => {
@@ -133,7 +177,10 @@ export default function App() {
       calcPPT() +
       calcTitleInsurance(type) +
       800 +
-      calcComplexityFee()
+      calcComplexityUnit() +
+      calcAdministrativeFees(type) +
+      calcInsuranceBinder(type) +
+      calcStrataFee(type)
     );
   };
 
@@ -198,21 +245,48 @@ export default function App() {
                     className={classes.formControl}
                   >
                     <InputLabel htmlFor="outlined-age-native-simple">
-                      Mortgages
+                      Num of Charges
                     </InputLabel>
                     <Select
                       native
-                      value={mortgages}
-                      onChange={handleMortageChange}
-                      label="Mortgages"
+                      value={numChargers}
+                      onChange={handleNumCharges}
+                      label="Num of Charges"
                     >
-                      <option aria-label="none" value="" />
-                      <option value={"0"}>0</option>
+                      <option aria-label="none" value={""} />
                       <option value={"1"}>1</option>
                       <option value={"2"}>2</option>
                       <option value={"3"}>3</option>
                       <option value={"4"}>4</option>
                       <option value={"5"}>5</option>
+                      <option value={"6"}>6</option>
+                      <option value={"7"}>7</option>
+                      <option value={"8"}>8</option>
+                      <option value={"9"}>9</option>
+                      <option value={"10"}>10</option>
+                    </Select>
+                  </FormControl>
+                </div>
+                <div className="Flex-Row">
+                  <FormControl
+                    variant="outlined"
+                    className={classes.formControl}
+                  >
+                    <InputLabel htmlFor="outlined-age-native-simple">
+                      Mortgage?
+                    </InputLabel>
+                    <Select
+                      native
+                      value={mortgage}
+                      onChange={handleMortageChange}
+                      label="Mortgage?"
+                    >
+                      <option aria-label="none" value="" />
+                      <option value={"no"}>No</option>
+                      <option value={"yes"}>Yes (one mortgage)</option>
+                      <option value={"yes1"}>
+                        Yes (more than one mortgage)
+                      </option>
                     </Select>
                   </FormControl>
                   <div className="Spacing" />
@@ -228,6 +302,45 @@ export default function App() {
                       value={titleInsurance}
                       onChange={handleTitleInsuranceChange}
                       label="Title Insurance?"
+                    >
+                      <option aria-label="none" value="" />
+                      <option value={"yes"}>Yes</option>
+                      <option value={"no"}>No</option>
+                    </Select>
+                  </FormControl>
+                </div>
+                <div className="Flex-Row">
+                  <FormControl
+                    variant="outlined"
+                    className={classes.formControl}
+                  >
+                    <InputLabel htmlFor="outlined-age-native-simple">
+                      Strata?
+                    </InputLabel>
+                    <Select
+                      native
+                      value={strata}
+                      onChange={handleStrataChange}
+                      label="Strata?"
+                    >
+                      <option aria-label="none" value="" />
+                      <option value={"yes"}>Yes</option>
+                      <option value={"no"}>No</option>
+                    </Select>
+                  </FormControl>
+                  <div className="Spacing" />
+                  <FormControl
+                    variant="outlined"
+                    className={classes.formControl}
+                  >
+                    <InputLabel htmlFor="outlined-age-native-simple">
+                      Construction?
+                    </InputLabel>
+                    <Select
+                      native
+                      value={construction}
+                      onChange={handleConstruction}
+                      label="Construction?"
                     >
                       <option aria-label="none" value="" />
                       <option value={"yes"}>Yes</option>
@@ -258,7 +371,7 @@ export default function App() {
                 </div>
                 <div className="Flex-Row-Narrow">
                   <Typography component="p" variant="inherit">
-                    Search Fee (3 X $9.88)
+                    Title Search Fee (3 X $9.88)
                   </Typography>
                   <Typography component="p" variant="inherit">
                     {currencyFormat(calcSearchFee())}
@@ -306,14 +419,6 @@ export default function App() {
                     {currencyFormat(calcPPT())}
                   </Typography>
                 </div>
-                {/* <div className="Flex-Row-Narrow">
-                  <Typography component="p" variant="inherit">
-                    {`Mortgage Fee (${mortgages ? mortgages : 0} x $75)`}
-                  </Typography>
-                  <Typography component="p" variant="inherit">
-                    {currencyFormat(calcMortageFee())}
-                  </Typography>
-                </div> */}
                 <div className="Flex-Row-Output">
                   <Typography
                     className={classes.boldText}
@@ -343,6 +448,99 @@ export default function App() {
                     component="p"
                     variant="inherit"
                   >
+                    Insurance Binder
+                  </Typography>
+                  <Typography component="p" variant="inherit"></Typography>
+                </div>
+                <div className="Flex-Row-Narrow">
+                  <Typography component="p" variant="inherit">
+                    Insurance Binder
+                  </Typography>
+                  <Typography component="p" variant="inherit">
+                    {`${currencyFormat(30)} - ${currencyFormat(50)}`}
+                  </Typography>
+                </div>
+
+                <div className="Flex-Row-Output">
+                  <Typography
+                    className={classes.boldText}
+                    component="p"
+                    variant="inherit"
+                  >
+                    Strata
+                  </Typography>
+                  <Typography component="p" variant="inherit"></Typography>
+                </div>
+                <div className="Flex-Row-Narrow">
+                  <Typography component="p" variant="inherit">
+                    Strata Information Fee
+                  </Typography>
+                  <Typography component="p" variant="inherit">
+                    {strata === "yes"
+                      ? `${currencyFormat(50)} - ${currencyFormat(100)}`
+                      : currencyFormat(0)}
+                  </Typography>
+                </div>
+
+                <div className="Flex-Row-Output">
+                  <Typography
+                    className={classes.boldText}
+                    component="p"
+                    variant="inherit"
+                  >
+                    Administrative Fees
+                  </Typography>
+                  <Typography component="p" variant="inherit"></Typography>
+                </div>
+                <div className="Flex-Row-Narrow">
+                  <Typography component="p" variant="inherit">
+                    Printing/Postage
+                  </Typography>
+                  <Typography component="p" variant="inherit">
+                    {`${currencyFormat(30)} - ${currencyFormat(50)}`}
+                  </Typography>
+                </div>
+                <div className="Flex-Row-Narrow">
+                  <Typography component="p" variant="inherit">
+                    Courier
+                  </Typography>
+                  <Typography component="p" variant="inherit">
+                    {`${currencyFormat(50)} - ${currencyFormat(75)}`}
+                  </Typography>
+                </div>
+                <div className="Flex-Row-Narrow">
+                  <Typography component="p" variant="inherit">
+                    Wire Transfer
+                  </Typography>
+                  <Typography component="p" variant="inherit">
+                    {"$20"}
+                  </Typography>
+                </div>
+                <div className="Flex-Row-Narrow">
+                  <Typography component="p" variant="inherit">
+                    Specialty Software Fees
+                  </Typography>
+                  <Typography component="p" variant="inherit">
+                    {"$75"}
+                  </Typography>
+                </div>
+                <div className="Flex-Row-Narrow">
+                  <Typography component="p" variant="inherit">
+                    Total
+                  </Typography>
+                  <Typography component="p" variant="inherit">
+                    {`${currencyFormat(
+                      calcAdministrativeFees("low")
+                    )} - ${currencyFormat(calcAdministrativeFees("high"))}`}
+                  </Typography>
+                </div>
+
+                <div className="Flex-Row-Output">
+                  <Typography
+                    className={classes.boldText}
+                    component="p"
+                    variant="inherit"
+                  >
                     Lawyer Fees
                   </Typography>
                   <Typography component="p" variant="inherit"></Typography>
@@ -357,10 +555,10 @@ export default function App() {
                 </div>
                 <div className="Flex-Row-Narrow">
                   <Typography component="p" variant="inherit">
-                    {`Complexity Fee (${mortgages ? mortgages : 0} x $50)`}
+                    {`Complexity Fee (${calcComplexityUnit()} CU x $1)`}
                   </Typography>
                   <Typography component="p" variant="inherit">
-                    {currencyFormat(calcComplexityFee())}
+                    {currencyFormat(calcComplexityUnit())}
                   </Typography>
                 </div>
                 <div className="Flex-Row-Narrow">
@@ -368,7 +566,7 @@ export default function App() {
                     Total
                   </Typography>
                   <Typography component="p" variant="inherit">
-                    {currencyFormat(800 + calcComplexityFee())}
+                    {currencyFormat(800 + calcComplexityUnit())}
                   </Typography>
                 </div>
                 <div className="Flex-Row-Total">
@@ -384,7 +582,7 @@ export default function App() {
                     component="p"
                     variant="inherit"
                   >
-                    {calcTotal("low") == calcTotal("high")
+                    {calcTotal("low") === calcTotal("high")
                       ? currencyFormat(calcTotal("low"))
                       : `${currencyFormat(calcTotal("low"))} - ${currencyFormat(
                           calcTotal("high")
