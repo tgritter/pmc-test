@@ -79,7 +79,7 @@ const Input = (props) => {
             <option aria-label="none" value="" />
             <option value={"1"}>1</option>
             <option value={"2"}>2</option>
-            <option value={"3"}>3</option>
+            <option value={"3+"}>3</option>
           </Select>
         </FormControl>
       </div>
@@ -109,7 +109,7 @@ const Input = (props) => {
           label="Are you in a strata?"
         />
       </div>
-      <div className="button-container">
+      <div className="flex-container">
         <Button
           onClick={props.handleSubmit}
           variant="contained"

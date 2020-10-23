@@ -4,24 +4,25 @@ import Typography from "@material-ui/core/Typography";
 import {
   rangeFormat,
   currencyFormat,
+  calcPTT,
+  calcLegalFees,
   calcTitleInsurance,
   calcInsuranceBinder,
-  serviceCharge,
-  numServiceCharge,
-  calcServiceCharge,
-  numTitleSearchFee,
-  titleSearchFee,
-  calcTitleSearchFee,
+  calcStrataFormsFee,
+  calcSpecialitySoftwareFee,
+  calcPostage,
+  calcWireTransfer,
+  calcLandTitleFormA,
+  calcLandTitleFormB,
+  calcLandTitleSearchFees,
   calcTaxCertificate,
-  calcStrataFees,
-  calcGST,
-  calcPST,
-  calcPPT,
-  lawyerBaseFee,
-  calcComplexityUnit,
-  calcTotal,
+  calcTrustAdministrationFee,
+  calcStateOfTitleCertificate,
+  calcTotalClosingCosts,
+  calcPriceOfConveyance,
 } from "../helpers/Calculations.js";
 import Button from "@material-ui/core/Button";
+import Contact from "./Contact.js";
 
 const useStyles = makeStyles((theme) => ({
   boldText: {
@@ -41,9 +42,44 @@ const Output = (props) => {
           component="p"
           variant="inherit"
         >
-          Insurance
+          Purchase Price
         </Typography>
-        <Typography component="p" variant="inherit"></Typography>
+        <Typography component="p" variant="inherit">
+          {currencyFormat(price)}
+        </Typography>
+      </div>
+      <div className="output-header-container">
+        <Typography
+          className={classes.boldText}
+          component="p"
+          variant="inherit"
+        >
+          Property Transfer Tax
+        </Typography>
+        <Typography component="p" variant="inherit">
+          {currencyFormat(calcPTT(price))}
+        </Typography>
+      </div>
+      <div className="output-header-container">
+        <Typography
+          className={classes.boldText}
+          component="p"
+          variant="inherit"
+        >
+          Legal Fees
+        </Typography>
+        <Typography component="p" variant="inherit">
+          {currencyFormat(calcLegalFees(purchasers, mortgage, strata))}
+        </Typography>
+      </div>
+      <div className="output-header-container">
+        <Typography
+          className={classes.boldText}
+          component="p"
+          variant="inherit"
+        >
+          Disbursements
+        </Typography>
       </div>
       <div className="output-body-container">
         <Typography component="p" variant="inherit">
@@ -61,31 +97,77 @@ const Output = (props) => {
           {rangeFormat(calcInsuranceBinder())}
         </Typography>
       </div>
-      {/* Land Title Office Fees */}
+      <div className="output-body-container">
+        <Typography component="p" variant="inherit">
+          Strata Forms Fee
+        </Typography>
+        <Typography component="p" variant="inherit">
+          {strata ? rangeFormat(calcStrataFormsFee(strata)) : currencyFormat(0)}
+        </Typography>
+      </div>
+      <div className="output-body-container">
+        <Typography component="p" variant="inherit">
+          Speciality Software Fee
+        </Typography>
+        <Typography component="p" variant="inherit">
+          {currencyFormat(calcSpecialitySoftwareFee())}
+        </Typography>
+      </div>
+      <div className="output-body-container">
+        <Typography component="p" variant="inherit">
+          Postage/Courier
+        </Typography>
+        <Typography component="p" variant="inherit">
+          {rangeFormat(calcPostage())}
+        </Typography>
+      </div>
+      <div className="output-body-container">
+        <Typography component="p" variant="inherit">
+          Wire Transfer/Bank Draft
+        </Typography>
+        <Typography component="p" variant="inherit">
+          {rangeFormat(calcWireTransfer())}
+        </Typography>
+      </div>
       <div className="output-header-container">
         <Typography
           className={classes.boldText}
           component="p"
           variant="inherit"
         >
-          Land Title Office Fees
-        </Typography>
-        <Typography component="p" variant="inherit"></Typography>
-      </div>
-      <div className="output-body-container">
-        <Typography component="p" variant="inherit">
-          {`Service Charge (${numServiceCharge} X $${serviceCharge})`}
-        </Typography>
-        <Typography component="p" variant="inherit">
-          {currencyFormat(calcServiceCharge())}
+          Government Fees
         </Typography>
       </div>
       <div className="output-body-container">
         <Typography component="p" variant="inherit">
-          {`Title Search Fee (${numTitleSearchFee} X $${titleSearchFee})`}
+          Land Title Form A Transfer Registration
         </Typography>
         <Typography component="p" variant="inherit">
-          {currencyFormat(calcTitleSearchFee())}
+          {currencyFormat(calcLandTitleFormA())}
+        </Typography>
+      </div>
+      <div className="output-body-container">
+        <Typography component="p" variant="inherit">
+          Land Title Form B Mortgage Registration
+        </Typography>
+        <Typography component="p" variant="inherit">
+          {currencyFormat(calcLandTitleFormB(mortgage))}
+        </Typography>
+      </div>
+      <div className="output-body-container">
+        <Typography component="p" variant="inherit">
+          Land Title Search Fees
+        </Typography>
+        <Typography component="p" variant="inherit">
+          {currencyFormat(calcLandTitleSearchFees())}
+        </Typography>
+      </div>
+      <div className="output-body-container">
+        <Typography component="p" variant="inherit">
+          Land Title Search Fees
+        </Typography>
+        <Typography component="p" variant="inherit">
+          {currencyFormat(calcSpecialitySoftwareFee())}
         </Typography>
       </div>
       <div className="output-body-container">
@@ -96,57 +178,20 @@ const Output = (props) => {
           {currencyFormat(calcTaxCertificate(municipality))}
         </Typography>
       </div>
-      {/* Strata */}
-      <div className="output-header-container">
-        <Typography
-          className={classes.boldText}
-          component="p"
-          variant="inherit"
-        >
-          Strata
-        </Typography>
-        <Typography component="p" variant="inherit"></Typography>
-      </div>
       <div className="output-body-container">
         <Typography component="p" variant="inherit">
-          Strata Information Fee
+          Trust Administration Fee
         </Typography>
         <Typography component="p" variant="inherit">
-          {strata ? rangeFormat(calcStrataFees(strata)) : currencyFormat(0)}
-        </Typography>
-      </div>
-      <div className="output-header-container">
-        <Typography
-          className={classes.boldText}
-          component="p"
-          variant="inherit"
-        >
-          Taxes
-        </Typography>
-        <Typography component="p" variant="inherit"></Typography>
-      </div>
-      <div className="output-body-container">
-        <Typography component="p" variant="inherit">
-          GST
-        </Typography>
-        <Typography component="p" variant="inherit">
-          {currencyFormat(calcGST(purchasers, mortgage, strata))}
+          {currencyFormat(calcTrustAdministrationFee())}
         </Typography>
       </div>
       <div className="output-body-container">
         <Typography component="p" variant="inherit">
-          PST
+          State of Title Certificate
         </Typography>
         <Typography component="p" variant="inherit">
-          {currencyFormat(calcPST())}
-        </Typography>
-      </div>
-      <div className="output-body-container">
-        <Typography component="p" variant="inherit">
-          Provincial Property Tax
-        </Typography>
-        <Typography component="p" variant="inherit">
-          {currencyFormat(calcPPT(price))}
+          {currencyFormat(calcStateOfTitleCertificate())}
         </Typography>
       </div>
       <div className="output-header-container">
@@ -155,49 +200,47 @@ const Output = (props) => {
           component="p"
           variant="inherit"
         >
-          Lawyer Fees
-        </Typography>
-        <Typography component="p" variant="inherit"></Typography>
-      </div>
-      <div className="output-body-container">
-        <Typography component="p" variant="inherit">
-          Base Fee
+          Total Closing Costs
         </Typography>
         <Typography component="p" variant="inherit">
-          {currencyFormat(lawyerBaseFee)}
-        </Typography>
-      </div>
-      <div className="output-body-container">
-        <Typography component="p" variant="inherit">
-          {`Complexity Fee (${calcComplexityUnit(
-            purchasers,
-            mortgage,
-            strata
-          )} CU x $1)`}
-        </Typography>
-        <Typography component="p" variant="inherit">
-          {currencyFormat(calcComplexityUnit(purchasers, mortgage, strata))}
-        </Typography>
-      </div>
-      <div className="output-total-container">
-        <Typography
-          className={classes.boldText}
-          component="p"
-          variant="inherit"
-        >
-          Total
-        </Typography>
-        <Typography
-          className={classes.boldText}
-          component="p"
-          variant="inherit"
-        >
           {rangeFormat(
-            calcTotal(price, purchasers, municipality, mortgage, strata)
+            calcTotalClosingCosts(purchasers, municipality, mortgage, strata)
           )}
         </Typography>
       </div>
-      <div className="button-container">
+      <div className="output-header-container">
+        <Typography
+          className={classes.boldText}
+          component="p"
+          variant="inherit"
+        >
+          Property Transfer Tax
+        </Typography>
+        <Typography component="p" variant="inherit">
+          {currencyFormat(calcPTT(price))}
+        </Typography>
+      </div>
+      <div className="output-header-container">
+        <Typography
+          className={classes.boldText}
+          component="p"
+          variant="inherit"
+        >
+          Total Price of Conveyance
+        </Typography>
+        <Typography component="p" variant="inherit">
+          {rangeFormat(
+            calcPriceOfConveyance(
+              price,
+              purchasers,
+              municipality,
+              mortgage,
+              strata
+            )
+          )}
+        </Typography>
+      </div>
+      <div className="flex-container">
         <Button
           onClick={props.handleSubmit}
           variant="contained"
@@ -206,58 +249,7 @@ const Output = (props) => {
           New Calculation
         </Button>
       </div>
-      {/* <div className="Flex-Row-Output">
-        <Typography
-          className={classes.boldText}
-          component="p"
-          variant="inherit"
-        >
-          Administrative Fees
-        </Typography>
-        <Typography component="p" variant="inherit"></Typography>
-      </div>
-      <div className="Flex-Row-Narrow">
-        <Typography component="p" variant="inherit">
-          Printing/Postage
-        </Typography>
-        <Typography component="p" variant="inherit">
-          {`${currencyFormat(30)} - ${currencyFormat(50)}`}
-        </Typography>
-      </div>
-      <div className="Flex-Row-Narrow">
-        <Typography component="p" variant="inherit">
-          Courier
-        </Typography>
-        <Typography component="p" variant="inherit">
-          {`${currencyFormat(50)} - ${currencyFormat(75)}`}
-        </Typography>
-      </div>
-      <div className="Flex-Row-Narrow">
-        <Typography component="p" variant="inherit">
-          Wire Transfer
-        </Typography>
-        <Typography component="p" variant="inherit">
-          {"$20"}
-        </Typography>
-      </div>
-      <div className="Flex-Row-Narrow">
-        <Typography component="p" variant="inherit">
-          Specialty Software Fees
-        </Typography>
-        <Typography component="p" variant="inherit">
-          {"$75"}
-        </Typography>
-      </div>
-      <div className="Flex-Row-Narrow">
-        <Typography component="p" variant="inherit">
-          Total
-        </Typography>
-        <Typography component="p" variant="inherit">
-          {`${currencyFormat(calcAdministrativeFees("low"))} - ${currencyFormat(
-            calcAdministrativeFees("high")
-          )}`}
-        </Typography>
-      </div> */}
+      <Contact />
     </div>
   );
 };

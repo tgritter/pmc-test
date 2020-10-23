@@ -54,10 +54,16 @@ const App = () => {
   const handleSubmit = () => {
     if (screen === "output") {
       setScreen("input");
+      if (price === 0) {
+        setPrice(null);
+      }
       return;
     }
     setScreen("loading");
     setTimeout(() => {
+      if (!price) {
+        setPrice(0);
+      }
       setScreen("output");
     }, timeout);
   };

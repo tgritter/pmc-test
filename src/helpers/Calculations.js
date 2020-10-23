@@ -1,60 +1,23 @@
 import { municipalities } from "./Municipalities.js";
 
 // Constants
-const gst = 0.05;
-const pst = 0.07;
+const hst = 1.12;
+const legalBaseFee = 500;
 const titleInsurance = [50, 200];
-const insuranceBinder = [30, 50];
-const strataFees = [50, 100];
-export const serviceCharge = 1.65;
-export const numServiceCharge = 6;
-export const titleSearchFee = 9.88;
-export const numTitleSearchFee = 3;
-export const lawyerBaseFee = 800;
+const insuranceBinder = [25, 75];
+const strataFormsFee = [50, 100];
+const specialitySoftwareFee = 84;
+const postage = [15, 40];
+const wireTransfer = [15, 30];
+const landTitleFormA = 74.87;
+const landTitleFormB = 74.87;
+const landTitleSearchFees = 50;
+const taxCertificate = 71.68;
+const trustAdministrationFee = 15.75;
+const stateOfTitleCertificate = 16.7;
 
 // Calculations
-export const calcTitleInsurance = () => {
-  return titleInsurance;
-};
-
-export const calcServiceCharge = () => {
-  return serviceCharge * numServiceCharge;
-};
-
-export const calcInsuranceBinder = () => {
-  return insuranceBinder;
-};
-
-export const calcTitleSearchFee = () => {
-  return titleSearchFee * numTitleSearchFee;
-};
-
-export const calcTaxCertificate = (municipality) => {
-  const found = municipalities.find((city) => city.name === municipality);
-  return typeof found === "undefined" ? 0 : found.fees;
-};
-
-export const calcStrataFees = (strata) => {
-  if (!strata) {
-    return [0, 0];
-  }
-  return strataFees;
-};
-
-export const calcGST = (purchasers, mortgage, strata) => {
-  return (
-    (calcServiceCharge() +
-      lawyerBaseFee +
-      calcComplexityUnit(purchasers, mortgage, strata)) *
-    gst
-  );
-};
-
-export const calcPST = () => {
-  return 0 * pst;
-};
-
-export const calcPPT = (price) => {
+export const calcPTT = (price) => {
   if (!price) {
     return 0;
   } else if (price < 200000) {
@@ -68,6 +31,12 @@ export const calcPPT = (price) => {
   }
 };
 
+export const calcLegalFees = (purchasers, mortgage, strata) => {
+  return (
+    (legalBaseFee + calcComplexityUnit(purchasers, mortgage, strata)) * hst
+  );
+};
+
 export const calcComplexityUnit = (purchasers, mortgage, strata) => {
   var complexityUnits = 0;
   if (purchasers === "2") {
@@ -77,7 +46,7 @@ export const calcComplexityUnit = (purchasers, mortgage, strata) => {
     complexityUnits += 100;
   }
   if (mortgage) {
-    complexityUnits += 100;
+    complexityUnits += 300;
   }
   if (strata) {
     complexityUnits += 100;
@@ -85,49 +54,130 @@ export const calcComplexityUnit = (purchasers, mortgage, strata) => {
   return complexityUnits;
 };
 
-export const calcTotal = (
+export const calcTitleInsurance = () => {
+  return titleInsurance;
+};
+
+export const calcInsuranceBinder = () => {
+  return insuranceBinder;
+};
+
+export const calcStrataFormsFee = (strata) => {
+  if (strata) {
+    return strataFormsFee;
+  }
+  return [0, 0];
+};
+
+export const calcSpecialitySoftwareFee = () => {
+  return specialitySoftwareFee;
+};
+
+export const calcPostage = () => {
+  return postage;
+};
+
+export const calcWireTransfer = () => {
+  return wireTransfer;
+};
+
+export const calcLandTitleFormA = () => {
+  return landTitleFormA;
+};
+
+export const calcLandTitleFormB = (mortgage) => {
+  if (mortgage) {
+    return landTitleFormB;
+  }
+  return 0;
+};
+
+export const calcLandTitleSearchFees = () => {
+  return landTitleSearchFees;
+};
+
+export const calcTaxCertificate = (municipality) => {
+  const found = municipalities.find((city) => city.name === municipality);
+  return typeof found === "undefined" ? 0 : found.fees;
+};
+
+export const calcTrustAdministrationFee = () => {
+  return trustAdministrationFee;
+};
+
+export const calcStateOfTitleCertificate = () => {
+  return stateOfTitleCertificate;
+};
+
+export const calcTotalClosingCosts = (
+  purchasers,
+  municipality,
+  mortgage,
+  strata
+) => {
+  const total = [0, 0];
+
+  total[0] += calcLegalFees(purchasers, mortgage, strata);
+  total[1] += calcLegalFees(purchasers, mortgage, strata);
+
+  total[0] += calcTitleInsurance()[0];
+  total[1] += calcTitleInsurance()[1];
+
+  total[0] += calcInsuranceBinder()[0];
+  total[1] += calcInsuranceBinder()[1];
+
+  total[0] += calcStrataFormsFee(strata)[0];
+  total[1] += calcStrataFormsFee(strata)[1];
+
+  total[0] += calcSpecialitySoftwareFee();
+  total[1] += calcSpecialitySoftwareFee();
+
+  total[0] += calcPostage()[0];
+  total[1] += calcPostage()[1];
+
+  total[0] += calcWireTransfer()[0];
+  total[1] += calcWireTransfer()[1];
+
+  total[0] += calcLandTitleFormA();
+  total[1] += calcLandTitleFormA();
+
+  total[0] += calcLandTitleFormB();
+  total[1] += calcLandTitleFormB();
+
+  total[0] += calcLandTitleSearchFees();
+  total[1] += calcLandTitleSearchFees();
+
+  total[0] += calcTaxCertificate(municipality);
+  total[1] += calcTaxCertificate(municipality);
+
+  total[0] += calcTrustAdministrationFee();
+  total[1] += calcTrustAdministrationFee();
+
+  total[0] += calcStateOfTitleCertificate();
+  total[1] += calcStateOfTitleCertificate();
+
+  return total;
+};
+
+export const calcPriceOfConveyance = (
   price,
   purchasers,
   municipality,
   mortgage,
   strata
 ) => {
-  const range = [0, 0];
+  const total = [0, 0];
 
-  range[0] += titleInsurance[0];
-  range[1] += titleInsurance[1];
+  total[0] += price;
+  total[1] += price;
 
-  range[0] += insuranceBinder[0];
-  range[1] += insuranceBinder[1];
+  total[0] += calcPTT(price);
+  total[1] += calcPTT(price);
 
-  range[0] += calcServiceCharge();
-  range[1] += calcServiceCharge();
+  total[0] += calcTotalClosingCosts(purchasers, mortgage, strata)[0];
+  total[1] += calcTotalClosingCosts(purchasers, mortgage, strata)[1];
 
-  range[0] += calcTitleSearchFee();
-  range[1] += calcTitleSearchFee();
-
-  range[0] += calcTaxCertificate(municipality);
-  range[1] += calcTaxCertificate(municipality);
-
-  range[0] += calcStrataFees(strata)[0];
-  range[1] += calcStrataFees(strata)[1];
-
-  range[0] += calcGST(purchasers, mortgage, strata);
-  range[1] += calcGST(purchasers, mortgage, strata);
-
-  range[0] += calcPST();
-  range[1] += calcPST();
-
-  range[0] += calcPPT(price);
-  range[1] += calcPPT(price);
-
-  range[0] += lawyerBaseFee;
-  range[1] += lawyerBaseFee;
-
-  range[0] += calcComplexityUnit(purchasers, mortgage, strata);
-  range[1] += calcComplexityUnit(purchasers, mortgage, strata);
-
-  return range;
+  return total;
 };
 
 // Formatter
