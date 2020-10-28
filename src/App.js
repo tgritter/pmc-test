@@ -6,12 +6,6 @@ import Header from "./components/Header.js";
 import Loading from "./components/Loading.js";
 import Input from "./components/Input.js";
 import Output from "./components/Output.js";
-import TagManager from 'react-gtm-module'
-
-const tagManagerArgs = {
-  gtmId: 'GTM-MXMPH96'
-};
-TagManager.initialize(tagManagerArgs)
 
 const timeout = 2000;
 
@@ -60,9 +54,6 @@ const App = () => {
 
   const handleSubmit = () => {
     window.gtag('event', 'login', {method: 'Google'});
-    window.dataLayer.push({
-      event: 'submitTest'
-    });
     if (screen === "output") {
       setScreen("input");
       return;

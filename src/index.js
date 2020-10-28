@@ -4,13 +4,6 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import TagManager from 'react-gtm-module'
-
-const tagManagerArgs = {
-  gtmId: 'GTM-MXMPH96',
-  dataLayerName: 'PageDataLayer'
-}
-TagManager.initialize(tagManagerArgs)
 
 const theme = createMuiTheme({
   palette: {
@@ -23,9 +16,7 @@ const theme = createMuiTheme({
   }
 });
 
-window.dataLayer.push({
-  event: 'indexTest'
-});
+window.gtag('event', 'login', {method: 'Google'});
 
 ReactDOM.render(
   <React.StrictMode>
