@@ -59,14 +59,15 @@ const App = () => {
   };
 
   const handleSubmit = () => {
-    const args = {
+    const tagManagerArgs = {
       dataLayer: {
-        event: "sign_up"
-        /* can pass more variables here if needed */
+          userId: '001',
+          userProject: 'project',
+          page: 'home'
       },
-      dataLayerName: "PageDataLayer"
-    };
-    TagManager.dataLayer(args);
+      dataLayerName: 'PageDataLayer'
+   }
+    TagManager.dataLayer(tagManagerArgs);
     if (screen === "output") {
       setScreen("input");
       return;

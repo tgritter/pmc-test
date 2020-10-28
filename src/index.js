@@ -4,10 +4,14 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import ReactGA from 'react-ga';
+import TagManager from 'react-gtm-module'
 
-ReactGA.initialize('G-10M0830TVZ');
-ReactGA.pageview(window.location.pathname + window.location.search);
+const tagManagerArgs = {
+  gtmId: 'GTM-MXMPH96',
+  dataLayerName: 'PageDataLayer'
+}
+TagManager.initialize(tagManagerArgs)
+
 const theme = createMuiTheme({
   palette: {
     primary: {
