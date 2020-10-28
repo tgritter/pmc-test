@@ -53,7 +53,7 @@ const App = () => {
   };
 
   const handleSubmit = () => {
-    window.gtag('event', 'login', {method: 'Google'});
+    window.gtag('event', 'price', {value: price});
     if (screen === "output") {
       setScreen("input");
       return;

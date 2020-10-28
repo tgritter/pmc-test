@@ -16,8 +16,6 @@ const theme = createMuiTheme({
   }
 });
 
-window.gtag('event', 'login', {method: 'Google'});
-
 ReactDOM.render(
   <React.StrictMode>
     <MuiThemeProvider theme={theme}>
