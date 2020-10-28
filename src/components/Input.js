@@ -2,6 +2,7 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
+import Typography from "@material-ui/core/Typography";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import CurrencyTextField from "@unicef/material-ui-currency-textfield";
@@ -26,6 +27,15 @@ const useStyles = makeStyles((theme) => ({
   textField: {
     width: "100%",
   },
+  centerText: {
+    textAlign: "center"
+  },
+  subText: {
+    fontSize: 10,
+    fontWeight: "bold",
+    textDecoration: "underline",
+    textAlign: "center"
+  }
 }));
 
 const Input = (props) => {
@@ -35,7 +45,7 @@ const Input = (props) => {
       <div className="input-container">
         <CurrencyTextField
           className={classes.textField}
-          label="Price"
+          label="Your home's purchase price"
           value={props.price}
           onChange={(event, price) => props.handleSetPrice(price)}
           variant="outlined"
@@ -44,16 +54,18 @@ const Input = (props) => {
           outputFormat="number"
           decimalCharacter="."
           digitGroupSeparator=","
+          error={props.priceErrorText !== ""}
+          helperText={props.priceErrorText}
         />
       </div>
       <div className="input-container">
         <FormControl variant="outlined" className={classes.formControl}>
           <InputLabel htmlFor="outlined-age-native-simple">
-            Municipality
+            Your home's location
           </InputLabel>
           <Select
             native
-            label="Municipality"
+            label="Your home's location"
             value={props.municipality}
             onChange={(event) => props.handleSetMunicipality(event)}
           >
@@ -68,18 +80,18 @@ const Input = (props) => {
         <div className="spacing" />
         <FormControl variant="outlined" className={classes.formControl}>
           <InputLabel htmlFor="outlined-age-native-simple">
-            # of Purchasers
+            How many purchasers?
           </InputLabel>
           <Select
             native
-            label="# of Purchasers"
+            label="How many purchasers?"
             value={props.purchasers}
             onChange={(event) => props.handleSetPurchasers(event)}
           >
             <option aria-label="none" value="" />
             <option value={"1"}>1</option>
             <option value={"2"}>2</option>
-            <option value={"3+"}>3</option>
+            <option value={"3"}>3+</option>
           </Select>
         </FormControl>
       </div>
@@ -106,7 +118,7 @@ const Input = (props) => {
               color="primary"
             />
           }
-          label="Are you in a strata?"
+          label="Are you buying into a strata?"
         />
       </div>
       <div className="flex-container">
@@ -115,8 +127,27 @@ const Input = (props) => {
           variant="contained"
           color="primary"
         >
-          Calculate
+          Price my conveyance
         </Button>
+      </div>
+      <div className="flex-container">
+        <Typography className={classes.centerText} component="p" variant="inherit">
+          Price My Conveyance is powered by the Zbar Law Corporation. We built Price My Conveyance to help you better understand the cost of your home, especially the legal fees and disbursements involved. 
+        </Typography>
+        <br/>
+        <Typography component="p" variant="inherit">
+          There are potential additional costs which are not included in this calculation:<br/>
+          <ul>
+            <li>GST on New/Substantially renovated homes</li>
+            <li>Foreign purchaser Property Transfer Tax </li>
+            <li>Adjustments for property tax, strata fees, move in fees, utilities</li>
+            <li>Appraisals and inspections</li>
+            <li>Lender fees  </li>
+          </ul>
+        </Typography>
+        <Typography className={classes.subText} component="p" variant="inherit">
+          Price My Conveyance is powered by the Zbar Law Corporation. We built Price My Conveyance to help you better understand the cost of your home, especially the legal fees and disbursements involved. 
+        </Typography>
       </div>
     </div>
   );

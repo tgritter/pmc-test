@@ -12,7 +12,7 @@ const timeout = 2000;
 const useStyles = makeStyles((theme) => ({
   root: {
     "& > *": {
-      margin: theme.spacing(1),
+      margin: "8px auto",
       width: "75%",
     },
   },
@@ -26,8 +26,9 @@ const App = () => {
   const classes = useStyles();
   const [screen, setScreen] = React.useState("input");
   const [price, setPrice] = React.useState(null);
+  const [priceErrorText, setPriceErrorText] = React.useState("");
   const [municipality, setMunicipality] = React.useState("");
-  const [purchasers, setPurchasers] = React.useState("");
+  const [purchasers, setPurchasers] = React.useState("1");
   const [mortgage, setMortgage] = React.useState(false);
   const [strata, setStrata] = React.useState(false);
 
@@ -54,11 +55,13 @@ const App = () => {
   const handleSubmit = () => {
     if (screen === "output") {
       setScreen("input");
-      if (price === 0) {
-        setPrice(null);
-      }
       return;
     }
+    if (!price) {
+      setPriceErrorText("Please enter a purchase price");
+      return
+    }
+    setPriceErrorText("");
     setScreen("loading");
     setTimeout(() => {
       if (!price) {
@@ -78,6 +81,7 @@ const App = () => {
             <Input
               price={price}
               handleSetPrice={handleSetPrice}
+              priceErrorText={priceErrorText}
               municipality={municipality}
               handleSetMunicipality={handleSetMunicipality}
               purchasers={purchasers}

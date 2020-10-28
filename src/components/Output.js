@@ -246,7 +246,7 @@ const Output = (props) => {
           variant="contained"
           color="primary"
         >
-          New Calculation
+          Price another conveyance
         </Button>
       </div>
       <Contact />

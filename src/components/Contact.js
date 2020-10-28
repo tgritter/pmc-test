@@ -1,5 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import Headshot from "../assets/zbar_headshot.jpg"
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
@@ -13,6 +14,15 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 20,
     textAlign: "center",
   },
+  centerText: {
+    textAlign: "center"
+  },
+  subText: {
+    fontSize: 10,
+    fontWeight: "bold",
+    textDecoration: "underline",
+    textAlign: "center"
+  }
 }));
 
 const Contact = () => {
@@ -30,27 +40,25 @@ const Contact = () => {
         </Typography>
       </div>
       <div className="flex-container">
-        <img
-          src="https://inside.tru.ca/wp-content/uploads/2017/04/IMG_2471-599x599.jpg"
-          alt="Zbar Lawyering"
-          width="200"
-          height="200"
-        />
+      <img src={Headshot} alt="headshot" width={200} height={300}/>
       </div>
       <div className="flex-container">
-        <Typography
-          className={classes.boldText}
-          component="p"
-          variant="inherit"
-        >
-          Contact Eli Zbar
+        <Typography className={classes.centerText} component="p" variant="inherit">
+          Price My Conveyance is powered by the Zbar Law Corporation. We built Price My Conveyance to help you better understand the cost of your home, especially the legal fees and disbursements involved. 
         </Typography>
+        <br/>
         <Typography component="p" variant="inherit">
-          Eli Zbar is the founder and lawyer at Zbar Law Corporation. Eli is
-          laser focused on helping entrepreneurs, investors, and individuals
-          protect their legal rights and meet their business goals.
-          Fundamentally, Eli is a problem solver, there is no client nor matter
-          too big or too small.
+          There are potential additional costs which are not included in this calculation:<br/>
+          <ul>
+            <li>GST on New/Substantially renovated homes</li>
+            <li>Foreign purchaser Property Transfer Tax </li>
+            <li>Adjustments for property tax, strata fees, move in fees, utilities</li>
+            <li>Appraisals and inspections</li>
+            <li>Lender fees  </li>
+          </ul>
+        </Typography>
+        <Typography className={classes.subText} component="p" variant="inherit">
+          Price My Conveyance is powered by the Zbar Law Corporation. We built Price My Conveyance to help you better understand the cost of your home, especially the legal fees and disbursements involved. 
         </Typography>
       </div>
       <div className="flex-container">
@@ -75,8 +83,17 @@ const Contact = () => {
           variant="contained"
           color="primary"
         >
-          Contact Eli
+          Email me this
         </Button>
+      </div>
+      <div className="flex-container">
+        <Typography className={classes.centerText} component="p" variant="inherit">
+          Zbar Law Corporation<br/>
+          Suite 400 - 601 West Broadway<br/>
+          Vancouver, BC V5Z 4C2<br/>
+          Office: (604) 871 – 4170<br/>
+          www.zbarlaw.com<br/>
+        </Typography>
       </div>
     </div>
   );
