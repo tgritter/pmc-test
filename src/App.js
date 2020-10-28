@@ -6,6 +6,12 @@ import Header from "./components/Header.js";
 import Loading from "./components/Loading.js";
 import Input from "./components/Input.js";
 import Output from "./components/Output.js";
+import TagManager from 'react-gtm-module'
+
+const tagManagerArgs = {
+  gtmId: 'GTM-MXMPH96'
+};
+TagManager.initialize(tagManagerArgs)
 
 const timeout = 2000;
 
@@ -53,6 +59,14 @@ const App = () => {
   };
 
   const handleSubmit = () => {
+    const args = {
+      dataLayer: {
+        event: "sign_up"
+        /* can pass more variables here if needed */
+      },
+      dataLayerName: "PageDataLayer"
+    };
+    TagManager.dataLayer(args);
     if (screen === "output") {
       setScreen("input");
       return;
