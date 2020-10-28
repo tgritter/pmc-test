@@ -59,6 +59,7 @@ const App = () => {
   };
 
   const handleSubmit = () => {
+    window.gtag('event', 'login', {method: 'Google'});
     window.dataLayer.push({
       event: 'submitTest'
     });
