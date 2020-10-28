@@ -53,7 +53,6 @@ const App = () => {
   };
 
   const handleSubmit = () => {
-    window.gtag('event', 'price', {value: price});
     if (screen === "output") {
       setScreen("input");
       return;
@@ -62,6 +61,7 @@ const App = () => {
       setPriceErrorText("Please enter a purchase price");
       return
     }
+    window.gtag('event', 'price', {value: price});
     setPriceErrorText("");
     setScreen("loading");
     setTimeout(() => {
