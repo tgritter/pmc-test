@@ -17,12 +17,6 @@ const useStyles = makeStyles((theme) => ({
   centerText: {
     textAlign: "center"
   },
-  subText: {
-    fontSize: 10,
-    fontWeight: "bold",
-    textDecoration: "underline",
-    textAlign: "center"
-  }
 }));
 
 const Contact = () => {
@@ -49,17 +43,14 @@ const Contact = () => {
         <br/>
         <Typography component="p" variant="inherit">
           There are potential additional costs which are not included in this calculation:<br/>
-          <ul>
-            <li>GST on New/Substantially renovated homes</li>
-            <li>Foreign purchaser Property Transfer Tax </li>
-            <li>Adjustments for property tax, strata fees, move in fees, utilities</li>
-            <li>Appraisals and inspections</li>
-            <li>Lender fees  </li>
-          </ul>
         </Typography>
-        <Typography className={classes.subText} component="p" variant="inherit">
-          Price My Conveyance is powered by the Zbar Law Corporation. We built Price My Conveyance to help you better understand the cost of your home, especially the legal fees and disbursements involved. 
-        </Typography>
+        <ul>
+          <li>GST on New/Substantially renovated homes</li>
+          <li>Foreign purchaser Property Transfer Tax </li>
+          <li>Adjustments for property tax, strata fees, move in fees, utilities</li>
+          <li>Appraisals and inspections</li>
+          <li>Lender fees  </li>
+        </ul>
       </div>
       <div className="flex-container">
         <TextField

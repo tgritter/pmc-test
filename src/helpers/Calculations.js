@@ -12,7 +12,6 @@ const wireTransfer = [15, 30];
 const landTitleFormA = 74.87;
 const landTitleFormB = 74.87;
 const landTitleSearchFees = 50;
-const taxCertificate = 71.68;
 const trustAdministrationFee = 15.75;
 const stateOfTitleCertificate = 16.7;
 
