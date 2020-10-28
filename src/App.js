@@ -59,15 +59,9 @@ const App = () => {
   };
 
   const handleSubmit = () => {
-    const tagManagerArgs = {
-      dataLayer: {
-          userId: '001',
-          userProject: 'project',
-          page: 'home'
-      },
-      dataLayerName: 'PageDataLayer'
-   }
-    TagManager.dataLayer(tagManagerArgs);
+    window.dataLayer.push({
+      event: 'submitTest'
+    });
     if (screen === "output") {
       setScreen("input");
       return;

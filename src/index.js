@@ -23,6 +23,10 @@ const theme = createMuiTheme({
   }
 });
 
+window.dataLayer.push({
+  event: 'indexTest'
+});
+
 ReactDOM.render(
   <React.StrictMode>
     <MuiThemeProvider theme={theme}>
