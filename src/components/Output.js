@@ -164,14 +164,6 @@ const Output = (props) => {
       </div>
       <div className="output-body-container">
         <Typography component="p" variant="inherit">
-          Specialty Software Fees
-        </Typography>
-        <Typography component="p" variant="inherit">
-          {currencyFormat(calcSpecialitySoftwareFee())}
-        </Typography>
-      </div>
-      <div className="output-body-container">
-        <Typography component="p" variant="inherit">
           Tax Certificate
         </Typography>
         <Typography component="p" variant="inherit">
