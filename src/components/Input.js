@@ -136,7 +136,7 @@ const Input = (props) => {
         </Typography>
         <br/>
         <Typography component="p" variant="inherit">
-          Price My Conveyance is for informational purposes only. This is not legal advice, a guarantee, or a quote. You must seek legal advice regarding the costs of your particular conveyance. 
+          There are potential additional costs which are not included in this calculation:<br/>
         </Typography>
         <ul>
           <li>GST on New/Substantially renovated homes</li>
