@@ -1,6 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
+import PMCLogo from "../assets/pmc_logo.png"
 import Logo from "../assets/zbar_logo.jpg"
 
 const useStyles = makeStyles((theme) => ({
@@ -18,9 +19,7 @@ const Header = () => {
   const classes = useStyles();
   return (
     <div className="app-header">
-        <Typography component="h1" variant="h5">
-          Price My Conveyance
-        </Typography>
+        <img src={PMCLogo} alt="logo" width={200} height={25}/>
         <Typography className={classes.subtext} component="p" variant="inherit">
           Powered By
         </Typography>

@@ -17,6 +17,12 @@ const useStyles = makeStyles((theme) => ({
   centerText: {
     textAlign: "center"
   },
+  boldUnderlineText: {
+    fontWeight: 'bold',
+    textDecoration: 'underline',
+    textAlign: "center",
+    fontSize: "12px"
+  }
 }));
 
 const Contact = () => {
@@ -51,6 +57,9 @@ const Contact = () => {
           <li>Appraisals and inspections</li>
           <li>Lender fees  </li>
         </ul>
+        <Typography className={classes.boldUnderlineText} component="p" variant="inherit">
+          Price My Conveyance is for informational purposes only. This is not legal advice, a guarantee, or a quote. You must seek legal advice regarding the costs of your particular conveyance. 
+        </Typography>
       </div>
       <div className="flex-container">
         <TextField
@@ -74,7 +83,7 @@ const Contact = () => {
           variant="contained"
           color="primary"
         >
-          Email me this
+          Receive your price via email
         </Button>
       </div>
       <div className="flex-container">

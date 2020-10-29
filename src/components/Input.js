@@ -30,6 +30,12 @@ const useStyles = makeStyles((theme) => ({
   centerText: {
     textAlign: "center"
   },
+  boldUnderlineText: {
+    fontWeight: 'bold',
+    textDecoration: 'underline',
+    textAlign: "center",
+    fontSize: "12px"
+  }
 }));
 
 const Input = (props) => {
@@ -55,11 +61,11 @@ const Input = (props) => {
       <div className="input-container">
         <FormControl variant="outlined" className={classes.formControl}>
           <InputLabel htmlFor="outlined-age-native-simple">
-            Your home's location
+            Location
           </InputLabel>
           <Select
             native
-            label="Your home's location"
+            label="Location"
             value={props.municipality}
             onChange={(event) => props.handleSetMunicipality(event)}
           >
@@ -130,7 +136,7 @@ const Input = (props) => {
         </Typography>
         <br/>
         <Typography component="p" variant="inherit">
-          There are potential additional costs which are not included in this calculation:<br/>
+          Price My Conveyance is for informational purposes only. This is not legal advice, a guarantee, or a quote. You must seek legal advice regarding the costs of your particular conveyance. 
         </Typography>
         <ul>
           <li>GST on New/Substantially renovated homes</li>
@@ -139,6 +145,9 @@ const Input = (props) => {
           <li>Appraisals and inspections</li>
           <li>Lender fees  </li>
         </ul>
+        <Typography className={classes.boldUnderlineText} component="p" variant="inherit">
+        Price My Conveyance is for informational purposes only. This is not legal advice, a guarantee, or a quote. You must seek legal advice regarding the costs of your particular conveyance. 
+        </Typography>
       </div>
     </div>
   );

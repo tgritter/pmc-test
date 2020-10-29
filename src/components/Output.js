@@ -164,7 +164,7 @@ const Output = (props) => {
       </div>
       <div className="output-body-container">
         <Typography component="p" variant="inherit">
-          Land Title Search Fees
+          Specialty Software Fees
         </Typography>
         <Typography component="p" variant="inherit">
           {currencyFormat(calcSpecialitySoftwareFee())}
