@@ -84,6 +84,7 @@ const Contact = (props) => {
           variant="outlined"
           value={props.email}
           onChange={(event) => props.handleSetEmail(event)}
+          onFocus={() => props.clearEmailError()}
           error={props.emailError !== ""}
           helperText={props.emailError}
         />

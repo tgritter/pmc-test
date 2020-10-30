@@ -128,6 +128,10 @@ const sendEmail = () => {
     })
 }
 
+const clearEmailError = () => {
+  setEmailError("")
+}
+
   const submitCalculateDataToGA = () => {
     window.gtag('event', 'PurchasePrice', {value: price});
     window.gtag('event', 'Municipality', {value: municipality});
@@ -181,6 +185,7 @@ const sendEmail = () => {
               emailError={emailError}
               handleSendEmail={handleSendEmail}
               emailLoading={emailLoading}
+              clearEmailError={clearEmailError}
             />
             </div>
           )}

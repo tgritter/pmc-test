@@ -23,7 +23,9 @@ const Header = () => {
         <Typography className={classes.subtext} component="p" variant="inherit">
           Powered By
         </Typography>
-        <img src={Logo} alt="logo" width={80} height={20}/>
+        <a href="https://www.zbarlaw.com/">
+          <img src={Logo} alt="logo" width={80} height={20}/>
+        </a>
     </div>
   );
 };
