@@ -123,7 +123,7 @@ const Input = (props) => {
       </div>
       <div className="flex-container">
         <Button
-          onClick={props.handleSubmit}
+          onClick={props.handleCalculate}
           variant="contained"
           color="primary"
         >

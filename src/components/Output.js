@@ -22,7 +22,6 @@ import {
   calcPriceOfConveyance,
 } from "../helpers/Calculations.js";
 import Button from "@material-ui/core/Button";
-import Contact from "./Contact.js";
 
 const useStyles = makeStyles((theme) => ({
   boldText: {
@@ -234,14 +233,13 @@ const Output = (props) => {
       </div>
       <div className="flex-container">
         <Button
-          onClick={props.handleSubmit}
+          onClick={props.handleCalculateAgain}
           variant="contained"
           color="primary"
         >
           Price another conveyance
         </Button>
       </div>
-      <Contact />
     </div>
   );
 };

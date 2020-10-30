@@ -6,8 +6,11 @@ import Header from "./components/Header.js";
 import Loading from "./components/Loading.js";
 import Input from "./components/Input.js";
 import Output from "./components/Output.js";
+import Confirm from "./components/Confirm.js";
+import Contact from "./components/Contact.js";
 
 const timeout = 2000;
+const templateID = "template_fu90otl"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,6 +35,12 @@ const App = () => {
   const [mortgage, setMortgage] = React.useState(false);
   const [strata, setStrata] = React.useState(false);
 
+  const [name, setName] = React.useState(null);
+  const [email, setEmail] = React.useState(null);
+  const [emailLoading, setEmailLoading] = React.useState(false);
+  const [emailError, setEmailError] = React.useState("");
+
+
   const handleSetPrice = (value) => {
     setPrice(value);
   };
@@ -52,17 +61,21 @@ const App = () => {
     setStrata(event.target.checked);
   };
 
-  const handleSubmit = () => {
-    if (screen === "output") {
-      setScreen("input");
-      return;
-    }
+  const handleSetName = (event) => {
+    setName(event.target.value);
+  };
+
+  const handleSetEmail = (event) => {
+    setEmail(event.target.value);
+  };
+
+  const handleCalculate = () => {
     if (!price) {
       setPriceErrorText("Please enter a purchase price");
       return
     }
-    window.gtag('event', 'price', {value: price});
     setPriceErrorText("");
+    submitCalculateDataToGA();
     setScreen("loading");
     setTimeout(() => {
       if (!price) {
@@ -70,7 +83,63 @@ const App = () => {
       }
       setScreen("output");
     }, timeout);
+  }
+
+  const handleCalculateAgain = () => {
+    setScreen("input");
   };
+
+  const handleSendEmail = () => {
+    if (!validEmail(email)){
+      setEmailError("Please enter a valid email")
+      return
+    }
+    setEmailError("")
+    sendEmail()
+  };
+
+  const validEmail = (email) => {
+    if (!email) {
+      return false
+    }
+    var re = /\S+@\S+\.\S+/;
+    return re.test(email);
+  }
+
+  //Custom EmailJS method
+const sendEmail = () => {
+  const variables = {
+    name: name ? name : "", 
+    email: "good@emailfake.com"
+  }
+  setEmailLoading(true)
+  window.emailjs.send(
+    'gmail', templateID,
+    variables
+    ).then(res => {
+      // Email successfully sent alert
+      submitEmailDataToGA()
+      setEmailLoading(false)
+      setScreen("confirm");
+    }, error => {
+      console.log('Failed...', error)
+      setEmailLoading(false)
+      setEmailError("Failed to send email")
+    })
+}
+
+  const submitCalculateDataToGA = () => {
+    window.gtag('event', 'PurchasePrice', {value: price});
+    window.gtag('event', 'Municipality', {value: municipality});
+    window.gtag('event', 'NumOfPurchasers', {value: purchasers});
+    window.gtag('event', 'Mortgage', {value: mortgage});
+    window.gtag('event', 'Strata', {value: strata});
+  }
+
+  const submitEmailDataToGA = () => {
+    window.gtag('event', 'Name', {value: name});
+    window.gtag('event', 'Email', {value: email});
+  }
 
   return (
     <form className={classes.root} noValidate autoComplete="off">
@@ -91,20 +160,36 @@ const App = () => {
               handleSetMortgage={handleSetMortgage}
               strata={strata}
               handleSetStrata={handleSetStrata}
-              handleSubmit={handleSubmit}
+              handleCalculate={handleCalculate}
             />
           )}
           {screen === "output" && (
+            <div>
             <Output
               price={price}
               municipality={municipality}
               purchasers={purchasers}
               mortgage={mortgage}
               strata={strata}
-              handleSubmit={handleSubmit}
+              handleCalculateAgain={handleCalculateAgain}
             />
+            <Contact 
+              name={name}
+              handleSetName={handleSetName}
+              email={email}
+              handleSetEmail={handleSetEmail}
+              emailError={emailError}
+              handleSendEmail={handleSendEmail}
+              emailLoading={emailLoading}
+            />
+            </div>
           )}
           {screen === "loading" && <Loading />}
+          {screen === "confirm" && 
+            <Confirm 
+              handleCalculateAgain={handleCalculateAgain}
+            />
+          }
         </div>
       </div>
     </form>

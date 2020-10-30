@@ -4,6 +4,7 @@ import Headshot from "../assets/zbar_headshot.jpg"
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const useStyles = makeStyles((theme) => ({
   boldText: {
@@ -22,10 +23,13 @@ const useStyles = makeStyles((theme) => ({
     textDecoration: 'underline',
     textAlign: "center",
     fontSize: "12px"
-  }
+  },
+  button: {
+    width: "275px"
+  },
 }));
 
-const Contact = () => {
+const Contact = (props) => {
   const classes = useStyles();
   return (
     <div>
@@ -67,6 +71,9 @@ const Contact = () => {
           label="Name"
           type="search"
           variant="outlined"
+          value={props.name}
+          onChange={(event) => props.handleSetName(event)}
+          
         />
       </div>
       <div className="flex-container">
@@ -75,15 +82,21 @@ const Contact = () => {
           label="Email"
           type="search"
           variant="outlined"
+          value={props.email}
+          onChange={(event) => props.handleSetEmail(event)}
+          error={props.emailError !== ""}
+          helperText={props.emailError}
         />
       </div>
       <div className="flex-container">
         <Button
-          onClick={() => console.log("HandlePressButton")}
+          className={classes.button}
+          onClick={() => props.handleSendEmail()}
           variant="contained"
           color="primary"
+
         >
-          Receive your price via email
+          {!props.emailLoading ? "Receive your price via email" : <CircularProgress size={30} color="black" />}
         </Button>
       </div>
       <div className="flex-container">
