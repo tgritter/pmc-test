@@ -8,7 +8,29 @@ import Input from "./components/Input.js";
 import Output from "./components/Output.js";
 import Confirm from "./components/Confirm.js";
 import Contact from "./components/Contact.js";
+import firebase from "./helpers/Firestore"
+import {
+  rangeFormat,
+  currencyFormat,
+  calcPTT,
+  calcLegalFees,
+  calcTitleInsurance,
+  calcInsuranceBinder,
+  calcStrataFormsFee,
+  calcSpecialitySoftwareFee,
+  calcPostage,
+  calcWireTransfer,
+  calcLandTitleFormA,
+  calcLandTitleFormB,
+  calcLandTitleSearchFees,
+  calcTaxCertificate,
+  calcTrustAdministrationFee,
+  calcStateOfTitleCertificate,
+  calcTotalClosingCosts,
+  calcPriceOfConveyance,
+} from "./helpers/Calculations.js";
 
+const db = firebase.firestore();
 const timeout = 2000;
 const templateID = "template_nljfzyj"
 
@@ -16,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     "& > *": {
       margin: "8px auto",
-      width: "75%",
+      width: "80%",
     },
   },
   avatar: {
@@ -75,7 +97,7 @@ const App = () => {
       return
     }
     setPriceErrorText("");
-    submitCalculateDataToGA();
+    uploadCalcToFirebase();
     setScreen("loading");
     setTimeout(() => {
       if (!price) {
@@ -106,44 +128,70 @@ const App = () => {
     return re.test(email);
   }
 
+  const clearEmailError = () => {
+    setEmailError("")
+  }
+
   //Custom EmailJS method
-const sendEmail = () => {
-  const variables = {
-    name: name ? name : "", 
-    email: "good@emailfake.com"
+  const sendEmail = () => {
+    const variables = {
+      name: name ? name : "", 
+      email: email,
+      purchase_price: currencyFormat(price),
+      ppt: currencyFormat(calcPTT(price)),
+      legal_fees: currencyFormat(calcLegalFees(purchasers, mortgage, strata)),
+      title_insurance: rangeFormat(calcTitleInsurance()),
+      insurance_binder: rangeFormat(calcInsuranceBinder()),
+      strata_forms_fee: strata ? rangeFormat(calcStrataFormsFee(strata)) : currencyFormat(0),
+      speciality_software_fee: currencyFormat(calcSpecialitySoftwareFee()),
+      postage_courier: rangeFormat(calcPostage()),
+      wire_transfer: rangeFormat(calcWireTransfer()),
+      land_title_a: currencyFormat(calcLandTitleFormA()),
+      land_title_b: currencyFormat(calcLandTitleFormB(mortgage)),
+      land_title_search_fees: currencyFormat(calcLandTitleSearchFees()),
+      tax_certificate: currencyFormat(calcTaxCertificate(municipality)),
+      trust_admin_fee: currencyFormat(calcTrustAdministrationFee()),
+      state_title_cert: currencyFormat(calcStateOfTitleCertificate()),
+      total_closing_costs: rangeFormat(calcTotalClosingCosts(purchasers, municipality, mortgage, strata)),
+      total_price: rangeFormat(calcPriceOfConveyance(price,purchasers,municipality,mortgage,strata))
+    }
+    setEmailLoading(true)
+    uploadConfirmToFirebase()
+    window.emailjs.send(
+      'gmail', templateID,
+      variables
+      ).then(res => {
+        // Email successfully sent alert
+        setEmailLoading(false)
+        setScreen("confirm");
+      }, error => {
+        console.log('Failed...', error)
+        setEmailLoading(false)
+        setEmailError("Failed to send email")
+      }
+    )
   }
-  setEmailLoading(true)
-  window.emailjs.send(
-    'gmail', templateID,
-    variables
-    ).then(res => {
-      // Email successfully sent alert
-      submitEmailDataToGA()
-      setEmailLoading(false)
-      setScreen("confirm");
-    }, error => {
-      console.log('Failed...', error)
-      setEmailLoading(false)
-      setEmailError("Failed to send email")
-    })
+
+const uploadCalcToFirebase = () => {
+  db.collection("calculate").add({
+      price: price,
+      municipality: municipality,
+      purchasers: purchasers,
+      strata: strata,
+      mortgage: mortgage
+  })
 }
 
-const clearEmailError = () => {
-  setEmailError("")
+const uploadConfirmToFirebase = () => {
+  db.collection("confirm").add({
+      name: name,
+      email: email,
+  })
 }
 
-  const submitCalculateDataToGA = () => {
-    window.gtag('event', 'PurchasePrice', {value: price});
-    window.gtag('event', 'Municipality', {value: municipality});
-    window.gtag('event', 'NumOfPurchasers', {value: purchasers});
-    window.gtag('event', 'Mortgage', {value: mortgage});
-    window.gtag('event', 'Strata', {value: strata});
-  }
-
-  const submitEmailDataToGA = () => {
-    window.gtag('event', 'Name', {value: name});
-    window.gtag('event', 'Email', {value: email});
-  }
+// const submitDataToGA = () => {
+//   window.gtag('event', 'PurchasePrice', {event_category: "Price", event_label: 123456});
+// }
 
   return (
     <form className={classes.root} noValidate autoComplete="off">

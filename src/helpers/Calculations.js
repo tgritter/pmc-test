@@ -173,8 +173,8 @@ export const calcPriceOfConveyance = (
   total[0] += calcPTT(price);
   total[1] += calcPTT(price);
 
-  total[0] += calcTotalClosingCosts(purchasers, mortgage, strata)[0];
-  total[1] += calcTotalClosingCosts(purchasers, mortgage, strata)[1];
+  total[0] += calcTotalClosingCosts(purchasers, municipality, mortgage, strata)[0];
+  total[1] += calcTotalClosingCosts(purchasers, municipality, mortgage, strata)[1];
 
   return total;
 };

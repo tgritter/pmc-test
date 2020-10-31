@@ -91,7 +91,7 @@ const Input = (props) => {
             <option aria-label="none" value="" />
             <option value={"1"}>1</option>
             <option value={"2"}>2</option>
-            <option value={"3"}>3+</option>
+            <option value={"3+"}>3+</option>
           </Select>
         </FormControl>
       </div>
