@@ -38,7 +38,7 @@ export const calcLegalFees = (purchasers, mortgage, strata) => {
 
 export const calcComplexityUnit = (purchasers, mortgage, strata) => {
   var complexityUnits = 0;
-  if (purchasers === "3") {
+  if (purchasers === "3+") {
     complexityUnits += 100;
   }
   if (mortgage) {
