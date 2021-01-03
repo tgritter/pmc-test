@@ -125,7 +125,7 @@ const Input = (props) => {
         <Button
           onClick={props.handleCalculate}
           variant="contained"
-          color="primary"
+          color="secondary"
         >
           Price my conveyance
         </Button>

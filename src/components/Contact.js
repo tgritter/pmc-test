@@ -1,6 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Headshot from "../assets/zbar_headshot.jpg"
+import Headshots from "../assets/eli_and_ravneet.jpg"
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
@@ -44,11 +44,11 @@ const Contact = (props) => {
         </Typography>
       </div>
       <div className="flex-container">
-      <img src={Headshot} alt="headshot" width={200} height={300}/>
+      <img src={Headshots} alt="headshots" width={400} />
       </div>
       <div className="flex-container">
         <Typography className={classes.centerText} component="p" variant="inherit">
-          Price My Conveyance is powered by the Zbar Law Corporation. We built Price My Conveyance to help you better understand the cost of your home, especially the legal fees and disbursements involved. 
+          Price My Conveyance is powered by Arora Zbar LLP. We built Price My Conveyance to help you better understand the cost of your home, especially the legal fees and disbursements involved. 
         </Typography>
         <br/>
         <Typography component="p" variant="inherit">
@@ -94,7 +94,7 @@ const Contact = (props) => {
           className={classes.button}
           onClick={() => props.handleSendEmail()}
           variant="contained"
-          color="primary"
+          color="secondary"
 
         >
           {!props.emailLoading ? "Receive your price via email" : <CircularProgress size={30} color="black" />}
@@ -102,11 +102,15 @@ const Contact = (props) => {
       </div>
       <div className="flex-container">
         <Typography className={classes.centerText} component="p" variant="inherit">
-          Zbar Law Corporation<br/>
+          <b>Arora and Zbar LLP</b><br/>
+          Office: (604) 260 – 6890<br/>
+          <u>Vancouver Address</u><br/>
           Suite 400 - 601 West Broadway<br/>
           Vancouver, BC V5Z 4C2<br/>
-          Office: (604) 871 – 4170<br/>
-          www.zbarlaw.com<br/>
+          <u>Surrey Address</u><br/>
+          109A - 12888 80 Avenue<br/>
+          Surrey, BC V3W 3A8<br/>
+          <a href="https://arorazbar.com/">https://arorazbar.com/</a><br/>
         </Typography>
       </div>
     </div>

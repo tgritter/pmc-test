@@ -2,7 +2,7 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import PMCLogo from "../assets/pmc_logo.png"
-import Logo from "../assets/zbar_logo.jpg"
+import Logo from "../assets/arora_logo.png"
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -11,7 +11,8 @@ const useStyles = makeStyles((theme) => ({
   },
   subtext: {
     fontSize: 10,
-    padding: 5
+    padding: 5,
+    marginBottom: -10
   },
 }));
 
@@ -23,8 +24,8 @@ const Header = () => {
         <Typography className={classes.subtext} component="p" variant="inherit">
           Powered By
         </Typography>
-        <a href="https://www.zbarlaw.com/">
-          <img src={Logo} alt="logo" width={80} height={20}/>
+        <a href="https://arorazbar.com/">
+          <img src={Logo} alt="logo" width={150} />
         </a>
     </div>
   );
