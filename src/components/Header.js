@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.primary.main,
   },
   subtext: {
-    fontSize: 10,
+    fontSize: 12,
     padding: 5,
     marginBottom: -10
   },
@@ -25,7 +25,7 @@ const Header = () => {
           Powered By
         </Typography>
         <a href="https://arorazbar.com/">
-          <img src={Logo} alt="logo" width={150} />
+          <img src={Logo} alt="logo" width={240} />
         </a>
     </div>
   );

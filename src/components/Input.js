@@ -132,7 +132,7 @@ const Input = (props) => {
       </div>
       <div className="flex-container">
         <Typography className={classes.centerText} component="p" variant="inherit">
-          Price My Conveyance is powered by the Zbar Law Corporation. We built Price My Conveyance to help you better understand the cost of your home, especially the legal fees and disbursements involved. 
+          Price My Conveyance is powered by Arora Zbar LLP. We built Price My Conveyance to help you better understand the cost of your home, especially the legal fees and disbursements involved. 
         </Typography>
         <br/>
         <Typography component="p" variant="inherit">
