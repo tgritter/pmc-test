@@ -102,14 +102,10 @@ const Contact = (props) => {
       </div>
       <div className="flex-container">
         <Typography className={classes.centerText} component="p" variant="inherit">
-          <b>Arora and Zbar LLP</b><br/>
-          Office: (604) 260 – 6890<br/>
-          <u>Vancouver Address</u><br/>
+          Arora and Zbar LLP<br/>
           Suite 400 - 601 West Broadway<br/>
           Vancouver, BC V5Z 4C2<br/>
-          <u>Surrey Address</u><br/>
-          109A - 12888 80 Avenue<br/>
-          Surrey, BC V3W 3A8<br/>
+          Office: (604) 260 – 6890<br/>
           <a href="https://arorazbar.com/">https://arorazbar.com/</a><br/>
         </Typography>
       </div>
