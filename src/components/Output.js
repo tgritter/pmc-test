@@ -47,20 +47,18 @@ const Output = (props) => {
           {currencyFormat(price)}
         </Typography>
       </div>
-      {calcPTT(price, firstTimeBuyer) > 0 && 
-        <div className="output-header-container">
-          <Typography
-            className={classes.boldText}
-            component="p"
-            variant="inherit"
-          >
-            Property Transfer Tax
-          </Typography>
-          <Typography component="p" variant="inherit">
-            {currencyFormat(calcPTT(price, firstTimeBuyer))}
-          </Typography>
-        </div>
-      }
+      <div className="output-header-container">
+        <Typography
+          className={classes.boldText}
+          component="p"
+          variant="inherit"
+        >
+          Property Transfer Tax
+        </Typography>
+        <Typography component="p" variant="inherit">
+          {currencyFormat(calcPTT(price, firstTimeBuyer))}
+        </Typography>
+      </div>
       <div className="output-header-container">
         <Typography
           className={classes.boldText}
@@ -207,20 +205,18 @@ const Output = (props) => {
           )}
         </Typography>
       </div>
-      {calcPTT(price, firstTimeBuyer) > 0 && 
-        <div className="output-header-container">
-          <Typography
-            className={classes.boldText}
-            component="p"
-            variant="inherit"
-          >
-            Property Transfer Tax
-          </Typography>
-          <Typography component="p" variant="inherit">
-            {currencyFormat(calcPTT(price, firstTimeBuyer))}
-          </Typography>
-        </div>
-      }
+      <div className="output-header-container">
+        <Typography
+          className={classes.boldText}
+          component="p"
+          variant="inherit"
+        >
+          Property Transfer Tax
+        </Typography>
+        <Typography component="p" variant="inherit">
+          {currencyFormat(calcPTT(price, firstTimeBuyer))}
+        </Typography>
+      </div>
       <div className="output-header-container">
         <Typography
           className={classes.boldText}
