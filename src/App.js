@@ -56,6 +56,7 @@ const App = () => {
   const [purchasers, setPurchasers] = React.useState("1");
   const [mortgage, setMortgage] = React.useState(false);
   const [strata, setStrata] = React.useState(false);
+  const [firstTimeBuyer, setFirstTimeBuyer] = React.useState(false);
 
   const [name, setName] = React.useState(null);
   const [email, setEmail] = React.useState(null);
@@ -81,6 +82,10 @@ const App = () => {
 
   const handleSetStrata = (event) => {
     setStrata(event.target.checked);
+  };
+
+  const handleSetFirstTimeBuyer = (event) => {
+    setFirstTimeBuyer(event.target.checked);
   };
 
   const handleSetName = (event) => {
@@ -153,7 +158,7 @@ const App = () => {
       trust_admin_fee: currencyFormat(calcTrustAdministrationFee()),
       state_title_cert: currencyFormat(calcStateOfTitleCertificate()),
       total_closing_costs: rangeFormat(calcTotalClosingCosts(purchasers, municipality, mortgage, strata)),
-      total_price: rangeFormat(calcPriceOfConveyance(price,purchasers,municipality,mortgage,strata))
+      total_price: rangeFormat(calcPriceOfConveyance(price,purchasers,municipality,mortgage,strata,firstTimeBuyer))
     }
     setEmailLoading(true)
     uploadConfirmToFirebase()
@@ -189,10 +194,6 @@ const uploadConfirmToFirebase = () => {
   })
 }
 
-// const submitDataToGA = () => {
-//   window.gtag('event', 'PurchasePrice', {event_category: "Price", event_label: 123456});
-// }
-
   return (
     <form className={classes.root} noValidate autoComplete="off">
       <CssBaseline />
@@ -212,6 +213,8 @@ const uploadConfirmToFirebase = () => {
               handleSetMortgage={handleSetMortgage}
               strata={strata}
               handleSetStrata={handleSetStrata}
+              firstTimeBuyer={firstTimeBuyer}
+              handleSetFirstTimeBuyer={handleSetFirstTimeBuyer}
               handleCalculate={handleCalculate}
             />
           )}
@@ -223,6 +226,7 @@ const uploadConfirmToFirebase = () => {
               purchasers={purchasers}
               mortgage={mortgage}
               strata={strata}
+              firstTimeBuyer={firstTimeBuyer}
               handleCalculateAgain={handleCalculateAgain}
             />
             <Contact 

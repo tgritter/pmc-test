@@ -121,6 +121,19 @@ const Input = (props) => {
           label="Are you buying into a strata?"
         />
       </div>
+      <div className="checkbox-container">
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={props.firstTimeBuyer}
+              onChange={props.handleSetFirstTimeBuyer}
+              name="strata"
+              color="primary"
+            />
+          }
+          label="Are you a first time home buyer?"
+        />
+      </div>
       <div className="flex-container">
         <Button
           onClick={props.handleCalculate}

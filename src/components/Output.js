@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Output = (props) => {
   const classes = useStyles();
-  const { price, purchasers, municipality, mortgage, strata } = props;
+  const { price, purchasers, municipality, mortgage, strata, firstTimeBuyer } = props;
   return (
     <div className="container">
       {/* Insurance */}
@@ -47,18 +47,20 @@ const Output = (props) => {
           {currencyFormat(price)}
         </Typography>
       </div>
-      <div className="output-header-container">
-        <Typography
-          className={classes.boldText}
-          component="p"
-          variant="inherit"
-        >
-          Property Transfer Tax
-        </Typography>
-        <Typography component="p" variant="inherit">
-          {currencyFormat(calcPTT(price))}
-        </Typography>
-      </div>
+      {calcPTT(price, firstTimeBuyer) > 0 && 
+        <div className="output-header-container">
+          <Typography
+            className={classes.boldText}
+            component="p"
+            variant="inherit"
+          >
+            Property Transfer Tax
+          </Typography>
+          <Typography component="p" variant="inherit">
+            {currencyFormat(calcPTT(price, firstTimeBuyer))}
+          </Typography>
+        </div>
+      }
       <div className="output-header-container">
         <Typography
           className={classes.boldText}
@@ -96,14 +98,16 @@ const Output = (props) => {
           {rangeFormat(calcInsuranceBinder())}
         </Typography>
       </div>
-      <div className="output-body-container">
-        <Typography component="p" variant="inherit">
-          Strata Forms Fee
-        </Typography>
-        <Typography component="p" variant="inherit">
-          {strata ? rangeFormat(calcStrataFormsFee(strata)) : currencyFormat(0)}
-        </Typography>
-      </div>
+      {strata &&
+        <div className="output-body-container">
+          <Typography component="p" variant="inherit">
+            Strata Forms Fee
+          </Typography>
+          <Typography component="p" variant="inherit">
+            {rangeFormat(calcStrataFormsFee(strata))}
+          </Typography>
+        </div>
+      }
       <div className="output-body-container">
         <Typography component="p" variant="inherit">
           Speciality Software Fee
@@ -145,14 +149,16 @@ const Output = (props) => {
           {currencyFormat(calcLandTitleFormA())}
         </Typography>
       </div>
-      <div className="output-body-container">
-        <Typography component="p" variant="inherit">
-          Land Title Form B Mortgage Registration
-        </Typography>
-        <Typography component="p" variant="inherit">
-          {currencyFormat(calcLandTitleFormB(mortgage))}
-        </Typography>
-      </div>
+      { calcLandTitleFormB(mortgage) > 0 &&
+        <div className="output-body-container">
+          <Typography component="p" variant="inherit">
+            Land Title Form B Mortgage Registration
+          </Typography>
+          <Typography component="p" variant="inherit">
+            {currencyFormat(calcLandTitleFormB(mortgage))}
+          </Typography>
+        </div>
+      }
       <div className="output-body-container">
         <Typography component="p" variant="inherit">
           Land Title Search Fees
@@ -161,14 +167,16 @@ const Output = (props) => {
           {currencyFormat(calcLandTitleSearchFees())}
         </Typography>
       </div>
-      <div className="output-body-container">
-        <Typography component="p" variant="inherit">
-          Tax Certificate
-        </Typography>
-        <Typography component="p" variant="inherit">
-          {currencyFormat(calcTaxCertificate(municipality))}
-        </Typography>
-      </div>
+      {calcTaxCertificate(municipality) > 0 &&
+        <div className="output-body-container">
+          <Typography component="p" variant="inherit">
+            Tax Certificate
+          </Typography>
+          <Typography component="p" variant="inherit">
+            {currencyFormat(calcTaxCertificate(municipality))}
+          </Typography>
+        </div>
+      }
       <div className="output-body-container">
         <Typography component="p" variant="inherit">
           Trust Administration Fee
@@ -199,18 +207,20 @@ const Output = (props) => {
           )}
         </Typography>
       </div>
-      <div className="output-header-container">
-        <Typography
-          className={classes.boldText}
-          component="p"
-          variant="inherit"
-        >
-          Property Transfer Tax
-        </Typography>
-        <Typography component="p" variant="inherit">
-          {currencyFormat(calcPTT(price))}
-        </Typography>
-      </div>
+      {calcPTT(price, firstTimeBuyer) > 0 && 
+        <div className="output-header-container">
+          <Typography
+            className={classes.boldText}
+            component="p"
+            variant="inherit"
+          >
+            Property Transfer Tax
+          </Typography>
+          <Typography component="p" variant="inherit">
+            {currencyFormat(calcPTT(price, firstTimeBuyer))}
+          </Typography>
+        </div>
+      }
       <div className="output-header-container">
         <Typography
           className={classes.boldText}
@@ -226,7 +236,8 @@ const Output = (props) => {
               purchasers,
               municipality,
               mortgage,
-              strata
+              strata,
+              firstTimeBuyer,
             )
           )}
         </Typography>

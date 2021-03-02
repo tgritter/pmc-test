@@ -16,7 +16,88 @@ const trustAdministrationFee = 15.75;
 const stateOfTitleCertificate = 16.7;
 
 // Calculations
-export const calcPTT = (price) => {
+export const calcPTT = (price, firstTimeBuyer) => {
+  if (firstTimeBuyer){
+    if (price <= 500000){
+      return 0
+    }
+    if (price <= 501000){
+      return 320.80
+    }
+    if (price <= 502000){
+      return 643.20
+    }
+    if (price <= 503000){
+      return 967.20
+    }
+    if (price <= 504000){
+      return 1292.80
+    }
+    if (price <= 505000){
+      return 1620.00
+    }
+    if (price <= 506000){
+      return 1948.80
+    }
+    if (price <= 507000){
+      return 2279.20
+    }
+    if (price <= 508000){
+      return 2611.20
+    }
+    if (price <= 509000){
+      return 2944.80
+    }
+    if (price <= 510000){
+      return 3280.00
+    }
+    if (price <= 511000){
+      return 3616.80
+    }
+    if (price <= 512000){
+      return 3955.20
+    }
+    if (price <= 513000){
+      return 4295.20
+    }
+    if (price <= 514000){
+      return 4636.80
+    }
+    if (price <= 515000){
+      return 4980.00
+    }
+    if (price <= 516000){
+      return 5324.80
+    }
+    if (price <= 517000){
+      return 5671.20
+    }
+    if (price <= 518000){
+      return 6019.20
+    }
+    if (price <= 519000){
+      return 6368.80
+    }
+    if (price <= 520000){
+      return 6720.00
+    }
+    if (price <=521000){
+      return 7072.80
+    }
+    if (price <= 522000){
+      return 7427.20
+    }
+    if (price <= 523000){
+      return 7783.20
+    }
+    if (price <= 524000){
+      return 8140.80
+    }
+    if (price <= 525000){
+      return 8500
+    }
+  }
+
   if (!price) {
     return 0;
   } else if (price < 200000) {
@@ -30,13 +111,13 @@ export const calcPTT = (price) => {
   }
 };
 
-export const calcLegalFees = (purchasers, mortgage, strata) => {
+export const calcLegalFees = (price, purchasers, mortgage, strata) => {
   return (
-    (legalBaseFee + calcComplexityUnit(purchasers, mortgage, strata)) * hst
+    (legalBaseFee + calcComplexityUnit(price, purchasers, mortgage, strata)) * hst
   );
 };
 
-export const calcComplexityUnit = (purchasers, mortgage, strata) => {
+export const calcComplexityUnit = (price, purchasers, mortgage, strata) => {
   var complexityUnits = 0;
   if (purchasers === "3+") {
     complexityUnits += 100;
@@ -46,6 +127,10 @@ export const calcComplexityUnit = (purchasers, mortgage, strata) => {
   }
   if (strata) {
     complexityUnits += 50;
+  }
+  price = price - 1000000
+  if (price > 0){
+    complexityUnits += 50 + Math.round(price/2000)
   }
   return complexityUnits;
 };
@@ -106,6 +191,7 @@ export const calcStateOfTitleCertificate = () => {
 };
 
 export const calcTotalClosingCosts = (
+  price,
   purchasers,
   municipality,
   mortgage,
@@ -113,8 +199,8 @@ export const calcTotalClosingCosts = (
 ) => {
   const total = [0, 0];
 
-  total[0] += calcLegalFees(purchasers, mortgage, strata);
-  total[1] += calcLegalFees(purchasers, mortgage, strata);
+  total[0] += calcLegalFees(price, purchasers, mortgage, strata);
+  total[1] += calcLegalFees(price, purchasers, mortgage, strata);
 
   total[0] += calcTitleInsurance()[0];
   total[1] += calcTitleInsurance()[1];
@@ -160,18 +246,19 @@ export const calcPriceOfConveyance = (
   purchasers,
   municipality,
   mortgage,
-  strata
+  strata,
+  firstTimeBuyer,
 ) => {
   const total = [0, 0];
 
   total[0] += price;
   total[1] += price;
 
-  total[0] += calcPTT(price);
-  total[1] += calcPTT(price);
+  total[0] += calcPTT(price, firstTimeBuyer);
+  total[1] += calcPTT(price, firstTimeBuyer);
 
-  total[0] += calcTotalClosingCosts(purchasers, municipality, mortgage, strata)[0];
-  total[1] += calcTotalClosingCosts(purchasers, municipality, mortgage, strata)[1];
+  total[0] += calcTotalClosingCosts(price, purchasers, municipality, mortgage, strata)[0];
+  total[1] += calcTotalClosingCosts(price, purchasers, municipality, mortgage, strata)[1];
 
   return total;
 };
