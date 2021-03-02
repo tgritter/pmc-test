@@ -131,7 +131,7 @@ const Input = (props) => {
               color="primary"
             />
           }
-          label="Are you a first time home buyer?"
+          label={<a href="https://www2.gov.bc.ca/gov/content/taxes/property-taxes/property-transfer-tax/exemptions/first-time-home-buyers">Are you a first time home buyer?</a>}
         />
       </div>
       <div className="flex-container">
