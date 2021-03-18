@@ -68,7 +68,7 @@ const Output = (props) => {
           Legal Fees
         </Typography>
         <Typography component="p" variant="inherit">
-          {currencyFormat(calcLegalFees(purchasers, mortgage, strata))}
+          {currencyFormat(calcLegalFees(price, purchasers, mortgage, strata))}
         </Typography>
       </div>
       <div className="output-header-container">
