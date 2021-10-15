@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/static/css/main.46860aa0.chunk.css",
+    "main.js": "/static/js/main.3c19aeeb.chunk.js",
+    "main.js.map": "/static/js/main.3c19aeeb.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.879ada5e.js",
+    "runtime-main.js.map": "/static/js/runtime-main.879ada5e.js.map",
+    "static/js/2.979148c1.chunk.js": "/static/js/2.979148c1.chunk.js",
+    "static/js/2.979148c1.chunk.js.map": "/static/js/2.979148c1.chunk.js.map",
+    "index.html": "/index.html",
+    "precache-manifest.be845e63e41891ec5fb986caaf5d54e7.js": "/precache-manifest.be845e63e41891ec5fb986caaf5d54e7.js",
+    "service-worker.js": "/service-worker.js",
+    "static/css/main.46860aa0.chunk.css.map": "/static/css/main.46860aa0.chunk.css.map",
+    "static/js/2.979148c1.chunk.js.LICENSE.txt": "/static/js/2.979148c1.chunk.js.LICENSE.txt",
+    "static/media/arora_logo.png": "/static/media/arora_logo.de8573d5.png",
+    "static/media/eli_and_ravneet.jpg": "/static/media/eli_and_ravneet.8da8086e.jpg",
+    "static/media/pmc_logo.png": "/static/media/pmc_logo.79e10190.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.879ada5e.js",
+    "static/js/2.979148c1.chunk.js",
+    "static/css/main.46860aa0.chunk.css",
+    "static/js/main.3c19aeeb.chunk.js"
+  ]
+}
