@@ -16,7 +16,10 @@ const trustAdministrationFee = 15.75;
 const stateOfTitleCertificate = 16.7;
 
 // Calculations
-export const calcPTT = (price, firstTimeBuyer) => {
+export const calcPTT = (price, firstTimeBuyer, newConstruction) => {
+  if (newConstruction){
+    return 0;
+  }
   if (firstTimeBuyer){
     if (price <= 500000){
       return 0
@@ -195,7 +198,8 @@ export const calcTotalClosingCosts = (
   purchasers,
   municipality,
   mortgage,
-  strata
+  strata,
+  newConstruction
 ) => {
   const total = [0, 0];
 
@@ -238,6 +242,11 @@ export const calcTotalClosingCosts = (
   total[0] += calcStateOfTitleCertificate();
   total[1] += calcStateOfTitleCertificate();
 
+  if (newConstruction){
+    total[0] += price * 0.05;
+    total[1] += price * 0.05;
+  }
+
   return total;
 };
 
@@ -248,17 +257,18 @@ export const calcPriceOfConveyance = (
   mortgage,
   strata,
   firstTimeBuyer,
+  newConstruction
 ) => {
   const total = [0, 0];
 
   total[0] += price;
   total[1] += price;
 
-  total[0] += calcPTT(price, firstTimeBuyer);
-  total[1] += calcPTT(price, firstTimeBuyer);
+  total[0] += calcPTT(price, firstTimeBuyer, newConstruction);
+  total[1] += calcPTT(price, firstTimeBuyer, newConstruction);
 
-  total[0] += calcTotalClosingCosts(price, purchasers, municipality, mortgage, strata)[0];
-  total[1] += calcTotalClosingCosts(price, purchasers, municipality, mortgage, strata)[1];
+  total[0] += calcTotalClosingCosts(price, purchasers, municipality, mortgage, strata, newConstruction)[0];
+  total[1] += calcTotalClosingCosts(price, purchasers, municipality, mortgage, strata, newConstruction)[1];
 
   return total;
 };

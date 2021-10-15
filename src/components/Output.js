@@ -1,6 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
+import HelpIcon from '@mui/icons-material/Help';
 import {
   rangeFormat,
   currencyFormat,
@@ -22,6 +23,7 @@ import {
   calcPriceOfConveyance,
 } from "../helpers/Calculations.js";
 import Button from "@material-ui/core/Button";
+import ReactTooltip from 'react-tooltip';
 
 const useStyles = makeStyles((theme) => ({
   boldText: {
@@ -31,9 +33,10 @@ const useStyles = makeStyles((theme) => ({
 
 const Output = (props) => {
   const classes = useStyles();
-  const { price, purchasers, municipality, mortgage, strata, firstTimeBuyer } = props;
+  const { price, purchasers, municipality, mortgage, strata, firstTimeBuyer, newConstruction } = props;
   return (
     <div className="container">
+      <ReactTooltip />
       {/* Insurance */}
       <div className="output-header-container">
         <Typography
@@ -41,7 +44,8 @@ const Output = (props) => {
           component="p"
           variant="inherit"
         >
-          Purchase Price
+        <div className="info" data-tip="Total price of property."><div>Purchase Price</div><HelpIcon fontSize='small'/></div>
+        
         </Typography>
         <Typography component="p" variant="inherit">
           {currencyFormat(price)}
@@ -56,7 +60,7 @@ const Output = (props) => {
           Property Transfer Tax
         </Typography>
         <Typography component="p" variant="inherit">
-          {currencyFormat(calcPTT(price, firstTimeBuyer))}
+          {currencyFormat(calcPTT(price, firstTimeBuyer, newConstruction))}
         </Typography>
       </div>
       <div className="output-header-container">
@@ -201,7 +205,7 @@ const Output = (props) => {
         </Typography>
         <Typography component="p" variant="inherit">
           {rangeFormat(
-            calcTotalClosingCosts(purchasers, municipality, mortgage, strata)
+            calcTotalClosingCosts(purchasers, municipality, mortgage, strata, newConstruction)
           )}
         </Typography>
       </div>
@@ -214,7 +218,7 @@ const Output = (props) => {
           Property Transfer Tax
         </Typography>
         <Typography component="p" variant="inherit">
-          {currencyFormat(calcPTT(price, firstTimeBuyer))}
+          {currencyFormat(calcPTT(price, firstTimeBuyer, newConstruction))}
         </Typography>
       </div>
       <div className="output-header-container">
@@ -234,6 +238,7 @@ const Output = (props) => {
               mortgage,
               strata,
               firstTimeBuyer,
+              newConstruction,
             )
           )}
         </Typography>

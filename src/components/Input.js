@@ -9,6 +9,11 @@ import CurrencyTextField from "@unicef/material-ui-currency-textfield";
 import Select from "@material-ui/core/Select";
 import Button from "@material-ui/core/Button";
 import { municipalities } from "../helpers/Municipalities.js";
+import ReactTooltip from 'react-tooltip';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import PropTypes from 'prop-types'
+import Box from '@mui/material/Box';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -38,10 +43,57 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box sx={{ p: 3 }}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  );
+}
+
+TabPanel.propTypes = {
+  children: PropTypes.node,
+  index: PropTypes.number.isRequired,
+  value: PropTypes.number.isRequired,
+};
+
+function a11yProps(index) {
+  return {
+    id: `simple-tab-${index}`,
+    'aria-controls': `simple-tabpanel-${index}`,
+  };
+}
+
 const Input = (props) => {
   const classes = useStyles();
+  const [value, setValue] = React.useState(0);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
   return (
     <div className="container">
+      <ReactTooltip />
+      <div className="input-container2">
+        <Tabs value={value} onChange={handleChange} aria-label="">
+          <Tab label="Buying" {...a11yProps(0)}/>
+          <Tab label="Selling" {...a11yProps(1)}/>
+        </Tabs>
+      </div>
+      <TabPanel value={value} index={0}>
       <div className="input-container">
         <CurrencyTextField
           className={classes.textField}
@@ -134,6 +186,19 @@ const Input = (props) => {
           label={<a href="https://www2.gov.bc.ca/gov/content/taxes/property-taxes/property-transfer-tax/exemptions/first-time-home-buyers">Are you a first time home buyer?</a>}
         />
       </div>
+      <div className="checkbox-container">
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={props.newConstruction}
+              onChange={props.handleSetNewConstruction}
+              name="construction"
+              color="primary"
+            />
+          }
+          label={<p data-tip="No PTT, GST applied.">Is this a new construction?</p>}
+        />
+      </div>
       <div className="flex-container">
         <Button
           onClick={props.handleCalculate}
@@ -162,6 +227,56 @@ const Input = (props) => {
         Price My Conveyance is for informational purposes only. This is not legal advice, a guarantee, or a quote. You must seek legal advice regarding the costs of your particular conveyance. 
         </Typography>
       </div>
+      </TabPanel>
+
+
+
+      <TabPanel value={value} index={1}>
+      <div className="input-container">
+        <CurrencyTextField
+          className={classes.textField}
+          label="Your home's selling price"
+          value={props.sellingPrice}
+          onChange={(event, selling_price) => props.handleSetSellingPrice(selling_price)}
+          variant="outlined"
+          currencySymbol="$"
+          minimumValue="0"
+          outputFormat="number"
+          decimalCharacter="."
+          digitGroupSeparator=","
+          error={props.sellingPriceErrorText !== ""}
+          helperText={props.sellingPriceErrorText}
+        />
+      </div>
+      <div className="flex-container">
+        <Button
+          onClick={props.handleSellingCalculate}
+          variant="contained"
+          color="secondary"
+        >
+          Price my conveyance
+        </Button>
+      </div>
+      <div className="flex-container">
+        <Typography className={classes.centerText} component="p" variant="inherit">
+          Price My Conveyance is powered by Arora Zbar LLP. We built Price My Conveyance to help you better understand the cost of your home, especially the legal fees and disbursements involved. 
+        </Typography>
+        <br/>
+        <Typography component="p" variant="inherit">
+          There are potential additional costs which are not included in this calculation:<br/>
+        </Typography>
+        <ul>
+          <li>GST on New/Substantially renovated homes</li>
+          <li>Foreign purchaser Property Transfer Tax </li>
+          <li>Adjustments for property tax, strata fees, move in fees, utilities</li>
+          <li>Appraisals and inspections</li>
+          <li>Lender fees  </li>
+        </ul>
+        <Typography className={classes.boldUnderlineText} component="p" variant="inherit">
+        Price My Conveyance is for informational purposes only. This is not legal advice, a guarantee, or a quote. You must seek legal advice regarding the costs of your particular conveyance. 
+        </Typography>
+      </div>
+      </TabPanel>
     </div>
   );
 };

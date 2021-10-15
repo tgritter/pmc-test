@@ -6,6 +6,7 @@ import Header from "./components/Header.js";
 import Loading from "./components/Loading.js";
 import Input from "./components/Input.js";
 import Output from "./components/Output.js";
+import SellingOutput from "./components/SellingOutput.js";
 import Confirm from "./components/Confirm.js";
 import Contact from "./components/Contact.js";
 import firebase from "./helpers/Firestore"
@@ -57,13 +58,17 @@ const App = () => {
   const [mortgage, setMortgage] = React.useState(false);
   const [strata, setStrata] = React.useState(false);
   const [firstTimeBuyer, setFirstTimeBuyer] = React.useState(false);
+  const [newConstruction, setNewConstruction] = React.useState(false);
+
+  const [sellingPrice, setSellingPrice] = React.useState(null);
+  const [sellingPriceErrorText, setSellingPriceErrorText] = React.useState("");
 
   const [name, setName] = React.useState(null);
   const [email, setEmail] = React.useState(null);
   const [emailLoading, setEmailLoading] = React.useState(false);
   const [emailError, setEmailError] = React.useState("");
 
-
+  // Buying 
   const handleSetPrice = (value) => {
     setPrice(value);
   };
@@ -88,6 +93,32 @@ const App = () => {
     setFirstTimeBuyer(event.target.checked);
   };
 
+  const handleSetNewConstruction = (event) => {
+    setNewConstruction(event.target.checked);
+  };
+
+  //Selling
+  const handleSetSellingPrice = (value) => {
+    setSellingPrice(value);
+  };
+
+  const handleSellingCalculate = () => {
+    if (!sellingPrice) {
+      setSellingPriceErrorText("Please enter a selling price");
+      return
+    }
+    setSellingPriceErrorText("");
+    // uploadCalcToFirebase();
+    setScreen("loading");
+    setTimeout(() => {
+      if (!sellingPrice) {
+        setSellingPrice(0);
+      }
+      setScreen("selling_output");
+    }, timeout);
+  }
+
+  // Contact 
   const handleSetName = (event) => {
     setName(event.target.value);
   };
@@ -215,7 +246,14 @@ const uploadConfirmToFirebase = () => {
               handleSetStrata={handleSetStrata}
               firstTimeBuyer={firstTimeBuyer}
               handleSetFirstTimeBuyer={handleSetFirstTimeBuyer}
+              newConstruction={newConstruction}
+              handleSetNewConstruction={handleSetNewConstruction}
               handleCalculate={handleCalculate}
+              sellingPrice={sellingPrice}
+              handleSetSellingPrice={handleSetSellingPrice}
+              sellingPriceErrorText={sellingPriceErrorText}
+              handleSellingCalculate={handleSellingCalculate}
+
             />
           )}
           {screen === "output" && (
@@ -227,6 +265,25 @@ const uploadConfirmToFirebase = () => {
               mortgage={mortgage}
               strata={strata}
               firstTimeBuyer={firstTimeBuyer}
+              newConstruction={newConstruction}
+              handleCalculateAgain={handleCalculateAgain}
+            />
+            <Contact 
+              name={name}
+              handleSetName={handleSetName}
+              email={email}
+              handleSetEmail={handleSetEmail}
+              emailError={emailError}
+              handleSendEmail={handleSendEmail}
+              emailLoading={emailLoading}
+              clearEmailError={clearEmailError}
+            />
+            </div>
+          )}
+          {screen === "selling_output" && (
+            <div>
+            <SellingOutput
+              price={sellingPrice}
               handleCalculateAgain={handleCalculateAgain}
             />
             <Contact 
